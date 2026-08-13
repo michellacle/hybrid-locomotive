@@ -16,4 +16,5 @@
 - Acceptance and learning validation documented in web/docs/v1-acceptance-report.md.
 - User-facing documentation updated in web/README.md.
 - Target public URL is documented: https://michellacle.github.io/hybrid-locomotive/.
-- External URL check currently returns HTTP 404; publication remains blocked until a push to main triggers Pages deployment.
+- Main branch push completed (commits 4a1649b and 37d6d2c) to trigger Pages deployment workflow.
+- External URL check currently returns HTTP 404; publication remains pending workflow completion and Pages propagation.
