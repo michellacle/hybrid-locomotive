@@ -8,10 +8,10 @@ Execution model:
 - Each ticket is a vertical slice or enabling slice that preserves a deployable path.
 
 Current frontier:
-- 08 — Integrate, Acceptance-Validate, and Publish v1
+- None — implementation ticket set is complete.
 
-Current blocker note:
-- External publication step pending: push to main required to trigger GitHub Pages workflow and make public URL live.
+Completion note:
+- GitHub Pages publication is live at https://michellacle.github.io/hybrid-locomotive/.
 
 Definition of done for this ticket set:
 - All tickets resolved.

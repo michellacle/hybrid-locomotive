@@ -48,5 +48,5 @@ Verified behaviors:
 ## Publication status
 
 - Public target URL: `https://michellacle.github.io/hybrid-locomotive/`
-- Current external status check: HTTP 404 (not yet published from main branch workflow run).
-- Remaining action: push current branch to `main` and let `.github/workflows/deploy-pages.yml` complete.
+- Current external status check: HTTP 200 (site live with expected app HTML).
+- Deployment workflow status: success (run `31700706873`).
