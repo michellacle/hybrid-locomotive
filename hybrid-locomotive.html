@@ -325,7 +325,7 @@ footer{margin-top:56px;position:relative;z-index:2}
   <div class="sec-head">
     <span class="idx">01</span>
     <h1>LIVE SYSTEM CUTAWAY</h1>
-    <span class="hint">blend diesel/electric at will &middot; pull the power handle &middot; throw the DYNAMIC BRAKE &middot; hover any system to inspect it</span>
+    <span class="hint">blend diesel/electric &middot; on the brake, the pack drinks first and the grid takes the excess &middot; hover any system to inspect</span>
   </div>
 
   <div class="stage-panel">
@@ -352,7 +352,7 @@ footer{margin-top:56px;position:relative;z-index:2}
         </div>
       </div>
 
-      <div class="console-line" id="consoleBox"><span id="consoleMsg">READY - source at 100% diesel. Blend to electric, pull the power handle, then throw the DYNAMIC BRAKE.</span><span class="caret"></span></div>
+      <div class="console-line" id="consoleBox"><span id="consoleMsg">READY - pack at 64%. Blend the source, pull the power, then throw the DYNAMIC BRAKE - pack drinks first, grid takes the rest.</span><span class="caret"></span></div>
 
       <svg id="scene" viewBox="0 0 1240 560" role="img" aria-label="Cutaway diagram of a hybrid electric locomotive: prime engine, battery pack, traction motors and roof-mounted dynamic braking resistor grid">
         <defs>
@@ -533,7 +533,7 @@ footer{margin-top:56px;position:relative;z-index:2}
           <rect x="714" y="320" width="106" height="34" rx="4" fill="#131e33" stroke="#33445f"/>
           <text x="726" y="341" class="tx" font-size="9">BMS</text>
           <circle id="ledChg" cx="770" cy="337" r="3.2" fill="#243c2c"/><circle cx="784" cy="337" r="3.2" fill="#5c4a22"/><circle cx="798" cy="337" r="3.2" fill="#3c1c1c"/>
-          <text x="818" y="352" class="tx" font-size="8" text-anchor="end">340 kWh</text>
+          <text x="818" y="352" class="tx" font-size="8" text-anchor="end">1.2 MWh</text>
         </g>
 
         <!-- SWITCHGEAR -->
@@ -574,7 +574,7 @@ footer{margin-top:56px;position:relative;z-index:2}
             <path d="M 830 84 C 838 72 822 66 830 54"/>
             <path d="M 920 84 C 928 72 912 66 920 54"/>
           </g>
-          <text x="845" y="72" class="tx" font-size="8" text-anchor="middle" letter-spacing="2">DYNAMIC BRAKING GRID &middot; 480 kW</text>
+          <text x="845" y="72" class="tx" font-size="8" text-anchor="middle" letter-spacing="2">DYNAMIC BRAKING GRID &middot; 480 kW SPILL PATH</text>
           <rect x="712" y="150" width="276" height="10" rx="2" fill="#33445f" stroke="#0c1220"/>
           <line x1="718" y1="112" x2="982" y2="112" stroke="#2b3852" stroke-width="3"/>
           <line x1="718" y1="134" x2="982" y2="134" stroke="#2b3852" stroke-width="3"/>
@@ -632,7 +632,7 @@ footer{margin-top:56px;position:relative;z-index:2}
         </div>
       </div>
 
-      <!-- NEW: diesel / electric blend -->
+      <!-- diesel / electric blend -->
       <div class="blend">
         <div class="blend-head">
           <label>POWER SOURCE BLEND</label>
@@ -663,7 +663,7 @@ footer{margin-top:56px;position:relative;z-index:2}
         </div>
       </div>
       <div class="grow">
-        <div class="kw"><span id="brkW">0 kW</span><small>GRID POWER &middot; DISSIPATED AS HEAT</small></div>
+        <div class="kw"><span id="brkW">0 kW</span><small>GRID SPILL &middot; DISSIPATED AS HEAT</small></div>
       </div>
       <div class="status" id="cabStatus">MODE <b>COAST</b></div>
     </aside>
@@ -717,12 +717,12 @@ footer{margin-top:56px;position:relative;z-index:2}
         <rect class="sfin" x="490" y="160" width="10" height="62" rx="3" fill="#39445a"/>
         <rect class="sfin" x="506" y="160" width="10" height="62" rx="3" fill="#39445a"/>
         <text x="479" y="242" class="tx" font-size="9.5" text-anchor="middle">RESISTOR GRID</text>
-        <text x="479" y="256" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">480 kW</text>
+        <text x="479" y="256" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">480 kW spill</text>
         <line id="sBatLine" x1="271" y1="322" x2="271" y2="203" stroke-width="2.5"/>
         <circle cx="271" cy="200" r="3.5" fill="#33445f"/>
         <rect x="212" y="322" width="118" height="46" rx="8" fill="none" stroke="#33445f" stroke-dasharray="5 4"/>
         <text x="271" y="342" class="tx" font-size="9" text-anchor="middle">BATTERY PACK</text>
-        <text x="271" y="356" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">blend source + aux - not the brake</text>
+        <text x="271" y="356" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">regen + blend source - 1.2 MWh</text>
         <g id="sRun">
           <line x1="300" y1="84" x2="300" y2="106" stroke="#3fd6ff" stroke-width="3" marker-end="url(#arC)"/>
           <line x1="262" y1="200" x2="238" y2="200" stroke="#3fd6ff" stroke-width="3" marker-end="url(#arC)"/>
@@ -739,13 +739,13 @@ footer{margin-top:56px;position:relative;z-index:2}
         </g>
         <text x="18" y="412" class="tx" font-size="9" fill="#5c6f8c">I = current &middot; E = back-EMF &middot; V = bus voltage - this map mirrors the cutaway in real time</text>
       </svg>
-      <div class="schem-cap">LIVE CIRCUIT MAP &middot; CONTACTOR FOLLOWS THE CAB &middot; BATTERY LINE SHOWS BLEND FLOW</div>
+      <div class="schem-cap">LIVE CIRCUIT MAP &middot; CONTACTOR FOLLOWS THE CAB &middot; BATTERY LINE SHOWS BLEND &amp; REGEN FLOW</div>
     </div>
     <ol class="steps" id="steps">
       <li class="step" style="--i:0"><span class="sn">1</span><div><h3>CUT THE LINE</h3><p>Pulling the brake handle throws the main contactor: the engine's generator opens from the traction bus. The motor loses its supply, but it is still spinning at wheel speed.</p></div></li>
       <li class="step" style="--i:1"><span class="sn">2</span><div><h3>MOTOR BECOMES A GENERATOR</h3><p>Any armature spinning faster than its applied voltage wants to feed current, not drink it. With the bus disconnected, that current has nowhere to go until the contactor gives it somewhere.</p></div></li>
-      <li class="step" style="--i:2"><span class="sn">3</span><div><h3>CURRENT RUNS BACKWARDS</h3><p>The contactor lands on the grid contact. Back-EMF now drives current out of the motor, up the roof feed line, into the resistor bank. Electromagnetic counter-torque on the axles is the braking force itself.</p></div></li>
-      <li class="step" style="--i:3"><span class="sn">4</span><div><h3>ENERGY BECOMES HEAT</h3><p>Up to 480 kW of kinetic energy is dumped into the fins - watch them climb from steel-grey to cherry glow and shimmer off the roof. At 880 C the circuit auto-releases to protect the grid.</p></div></li>
+      <li class="step" style="--i:2"><span class="sn">3</span><div><h3>CURRENT RUNS BACKWARDS</h3><p>The contactor lands on the grid contact and the bus flips. Back-EMF drives current out of the motor and into the bus - the pack drinks first (cheap storage, up to 350 kW), and the contactor spills whatever is left up the roof feed line into the resistor bank. Electromagnetic counter-torque on the axles is the braking force itself.</p></div></li>
+      <li class="step" style="--i:3"><span class="sn">4</span><div><h3>PACK FIRST, HEAT SECOND</h3><p>Energy the pack can't accept is dumped into the roof fins as heat - watch them climb toward cherry glow, heat shimmering off the roof. With a full pack the whole stop runs through the grid, and at 880 C the circuit auto-releases to protect it.</p></div></li>
     </ol>
   </div>
 </section>
@@ -762,19 +762,19 @@ footer{margin-top:56px;position:relative;z-index:2}
       <div class="chain">
         <div class="tok"><b>KINETIC</b><span>1/2 m&middot;v&sup2; - the train's own motion and momentum</span></div>
         <div class="chev" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="tok t-hot"><b>RESISTOR GRID</b><span>I&sup2;R loss - up to 480 kW of hot copper fins</span></div>
+        <div class="tok t-hot"><b>RESISTOR GRID</b><span>spill path - what the pack can't take, lost as I&sup2;R heat</span></div>
         <div class="chev c-hot" aria-hidden="true"><i></i><i></i><i></i></div>
         <div class="tok t-heat"><b>HEAT</b><span>radiated and fanned away into the night air</span></div>
       </div>
-      <p class="en-note">When you pull the dynamic brake, the locomotive is not spending stored power at all - it is spending the <b>train's own momentum</b>. The motors flip into generators, dump current backwards into the roof grid, and the kinetic energy leaves the system as heat. No friction, no worn brake shoes - just counter-torque and a roof that gets hot enough to glow.</p>
+      <p class="en-note">When you pull the dynamic brake, the locomotive is not spending stored power at all - it is spending the <b>train's own momentum</b>. The motors flip into generators and the current runs backwards: the pack recharges first (up to 350 kW), and whatever it can't accept is dumped into the roof grid, leaving the system as heat. With the pack full, the entire stop runs through the grid - no friction, no worn brake shoes, just counter-torque and a roof that gets hot enough to glow.</p>
     </div>
     <div class="en-side">
       <h4>SO WHY THE BATTERY?</h4>
-      <p>The 340 kWh pack smooths engine load, carries the cab's auxiliaries and starts the prime mover - and with the source-blend handle it can carry any share of the traction load, from a 50/50 split to full electric. What it is not, is the brake: a pack sized to swallow 480 kW of braking current every single stop would be a different (and far pricier) machine. Classic dynamic braking accepts the waste heat, because heat is free, reliable and infinitely repeatable.</p>
+      <p>The 1.2 MWh pack smooths engine load, carries the cab's auxiliaries, starts the prime mover, drinks the regen on every brake - and with the source-blend handle it can carry any share of the traction load, from a 50/50 split to full electric. What it is not, is the <em>only</em> brake: a hard stop needs more than the pack can drink, so the overflow always has the grid as a relief valve.</p>
       <ul class="facts">
         <li><b>880 &deg;C</b><span>grid auto-release temperature - the sim trips at this point too</span></li>
-        <li><b>480 kW</b><span>continuous grid rating: a full-size oven, bolted to a roof</span></li>
-        <li><b>~9 s</b><span>typical 60 to 15 km/h run on the grid at moderate speed</span></li>
+        <li><b>350 kW</b><span>pack regen acceptance - everything above that spills to the grid</span></li>
+        <li><b>1.2 MWh</b><span>traction pack - a full-electric pull lasts about 2 min before the diesel steps in</span></li>
       </ul>
     </div>
   </div>
@@ -784,7 +784,7 @@ footer{margin-top:56px;position:relative;z-index:2}
 <footer>
   <div class="hazard"></div>
   <div class="specbar">
-    <span>PRIME ENGINE &middot; 2,400 hp</span><span>TRACTION &middot; 2 &times; 900 kW</span><span>RESISTOR GRID &middot; 480 kW / 880 C RELEASE</span><span>BATTERY &middot; 340 kWh</span><span>BUS &middot; 600 V DC</span>
+    <span>PRIME ENGINE &middot; 2,400 hp</span><span>TRACTION &middot; 2 &times; 900 kW</span><span>RESISTOR GRID &middot; 480 kW / 880 C RELEASE</span><span>BATTERY &middot; 1,200 kWh</span><span>BUS &middot; 600 V DC</span>
     <em class="credit">single-file interactive - physics simplified for the demo</em>
   </div>
 </footer>
@@ -801,11 +801,17 @@ footer{margin-top:56px;position:relative;z-index:2}
 
   function boot() {
 
+    /* energy constants */
+    var BATT_MAX_KW = 350;        /* pack regen / charge acceptance limit */
+    var RATE_CHG = 0.0055;        /* %/s per kW charging (display-scaled)  */
+    var RATE_DCH = 0.00045;       /* %/s per kW discharging (display-scaled) */
+
     var S = {
       v: 0, thr: 0, blend: 1, db: false, temp: 40, soc: 64,
-      rpm: 0, odo: 0, gridKW: 0, dieselKW: 0, battUse: 0, chargeKW: 0,
-      hot: 0, fanA: 0, resMsg: false,
-      msg: "READY - source at 100% diesel. Blend to electric, pull the power handle, then throw the DYNAMIC BRAKE."
+      rpm: 0, odo: 0, gridKW: 0, genKW: 0, battChg: 0,
+      dieselKW: 0, battUse: 0, chargeKW: 0,
+      hot: 0, fanA: 0, resMsg: false, pFullMsg: false,
+      msg: "READY - pack at 64%. Blend the source, pull the power, then throw the DYNAMIC BRAKE - pack drinks first, grid takes the rest."
     };
 
     var scene = $("#scene"), fxL = $("#fx");
@@ -837,7 +843,7 @@ footer{margin-top:56px;position:relative;z-index:2}
     var sBatLine = $("#sBatLine");
     var insName = $("#insName"), insRole = $("#insRole"), insVal = $("#insVal");
 
-    /* ties (start early so the rightward scroll always has coverage) */
+    /* ties */
     var tiesA = $("#tiesA");
     for (var tx = -69; tx < 1400; tx += 55) {
       var tr = document.createElementNS(NS, "rect");
@@ -919,8 +925,7 @@ footer{margin-top:56px;position:relative;z-index:2}
 
     /* throttle */
     function setThr(v) {
-      S.thr = clamp(v, 0, 0 + 1) * 1;
-      S.thr = clamp(S.thr, 0, 1);
+      S.thr = clamp(v, 0, 1);
       var p = S.thr * 100;
       thrFill.style.height = p + "%";
       thrKnob.style.bottom = "calc(" + p + "% - 9px)";
@@ -944,7 +949,7 @@ footer{margin-top:56px;position:relative;z-index:2}
       if (e.key === "ArrowDown" || e.key === "ArrowLeft") { setThr(S.thr - 0.125); e.preventDefault(); }
     });
 
-    /* blend (diesel 100% ... electric 0%) */
+    /* blend */
     function blendLabel(b) {
       if (b >= 0.98) { return "100% DIESEL"; }
       if (b <= 0.02) { return "100% ELECTRIC"; }
@@ -996,7 +1001,7 @@ footer{margin-top:56px;position:relative;z-index:2}
       }
       S.db = true;
       clickSnd(true);
-      S.msg = "DYNAMIC BRAKE ENGAGED - contactor on GRID, motor in generator mode, current running backwards.";
+      S.msg = "DYNAMIC BRAKE ENGAGED - motor generating; pack charges first (max " + BATT_MAX_KW + " kW), excess spills to the roof grid.";
     }
     function release(msg) {
       S.db = false;
@@ -1015,18 +1020,19 @@ footer{margin-top:56px;position:relative;z-index:2}
     /* inspection */
     var comps = {
       engine: { n: "PRIME ENGINE", r: "V-16 diesel prime mover. Feeds the 600 V bus according to the diesel blend.", v: function () { return "~" + Math.round(S.rpm) + " rpm - " + Math.round(S.dieselKW / 1800 * 2400) + " hp to bus"; } },
-      batt: { n: "BATTERY PACK", r: "340 kWh Li-ion pack. Blend source for traction, plus start assist and cab auxiliaries.", v: function () {
+      batt: { n: "BATTERY PACK", r: "1,200 kWh Li-ion pack. Traction blend source, regen sink (max " + BATT_MAX_KW + " kW), start assist, auxiliaries.", v: function () {
         var x = "SoC " + S.soc.toFixed(1) + "% - ";
-        if (S.battUse > 5) { x = x + Math.round(S.battUse) + " kW to traction"; }
+        if (S.battChg > 5) { x = x + Math.round(S.battChg) + " kW regen in"; }
         else if (S.chargeKW > 5) { x = x + Math.round(S.chargeKW) + " kW charging"; }
+        else if (S.battUse > 5) { x = x + Math.round(S.battUse) + " kW to traction"; }
         else { x = x + "aux load only"; }
         return x;
       } },
       sw: { n: "MAIN SWITCHGEAR", r: "DB contactor routes the traction bus to the GEN line or the roof grid.", v: function () { return S.db ? "CONTACTOR: GRID - GEN open" : "CONTACTOR: GEN - grid open"; } },
-      mot: { n: "TRACTION MOTORS", r: "2 x 900 kW. Fed by engine, pack, or a blend of both - reversed across the grid as generators.", v: function () { return S.db ? "G - GENERATOR MODE" : "M - MOTOR MODE"; } },
-      grid: { n: "RESISTOR GRID", r: "Roof-mounted dynamic braking bank, 480 kW. Kinetic energy in, heat out.", v: function () { return Math.round(S.temp) + " C - " + Math.round(S.gridKW) + " kW dissipated"; } },
+      mot: { n: "TRACTION MOTORS", r: "2 x 900 kW. Fed by engine, pack, or a blend of both - reversed across the bus as generators under the brake.", v: function () { return S.db ? "G - GENERATOR MODE - " + Math.round(S.genKW) + " kW" : "M - MOTOR MODE"; } },
+      grid: { n: "RESISTOR GRID", r: "Roof spill path, 480 kW. Takes only what the pack cannot drink - kinetic energy in, heat out.", v: function () { return Math.round(S.temp) + " C - " + Math.round(S.gridKW) + " kW dissipated"; } },
       bus: { n: "MAIN BUS", r: "600 V DC distribution - the highway every power flow shares.", v: function () {
-        if (S.db) { return "Fed by the motors (reversed)"; }
+        if (S.db) { return "Fed by the motors (reversed) - pack + grid"; }
         if (S.blend <= 0.02) { return "Fed by the battery pack"; }
         if (S.blend >= 0.98) { return "Fed by the engine generator"; }
         return "Blend: engine + pack, " + Math.round(S.blend * 100) + "/" + Math.round((1 - S.blend) * 100);
@@ -1054,7 +1060,9 @@ footer{margin-top:56px;position:relative;z-index:2}
 
     /* physics */
     function step(dt) {
-      var demand = S.thr * 1800;
+      var thrEff = S.db ? 0 : S.thr;             /* brake overrides throttle */
+      var demand = thrEff * 1800;
+
       var wantBatt = (1 - S.blend);
       var batShare = wantBatt;
       if (S.soc < 8) { batShare = 0; }
@@ -1065,27 +1073,42 @@ footer{margin-top:56px;position:relative;z-index:2}
 
       S.battUse = demand * batShare;
       S.dieselKW = demand - S.battUse;
+
+      var taper = clamp((100 - S.soc) / 12, 0, 1);   /* charge taper above 88% SoC */
       S.chargeKW = 0;
       if (!S.db && S.soc < 100 && S.battUse < 5) {
-        S.chargeKW = S.blend * Math.max(0, S.thr * 320 - 60);
+        S.chargeKW = S.blend * Math.max(0, thrEff * 320 - 60) * taper;
       }
+
+      /* DYNAMIC BRAKING ROUTING: pack first, grid takes the excess */
+      S.genKW = 0; S.battChg = 0; S.gridKW = 0;
+      if (S.db && S.v > 3) {
+        S.genKW = Math.min(480, S.v * 4.6);
+        S.battChg = Math.min(S.genKW, BATT_MAX_KW * taper);
+        S.gridKW = S.genKW - S.battChg;
+      }
+      if (S.db && S.v > 3 && S.battChg < 10 && S.gridKW > 150 && !S.pFullMsg) {
+        S.msg = "PACK AT LIMIT - full braking power through the roof grid.";
+        S.pFullMsg = true;
+      }
+      if (S.battChg > 60) { S.pFullMsg = false; }
 
       var rpmT;
       if (S.db) { rpmT = 550; }
       else if (S.blend < 0.02) { rpmT = 600; }
-      else { rpmT = 550 + S.thr * 2200 * (0.25 + 0.75 * S.blend); }
+      else { rpmT = 550 + thrEff * 2200 * (0.25 + 0.75 * S.blend); }
       S.rpm += (rpmT - S.rpm) * Math.min(1, dt * 2.2);
-      if (S.thr <= 0.03 && !S.db && S.blend < 0.02 && S.v < 1) {
+      if (thrEff <= 0.03 && !S.db && S.blend < 0.02 && S.v < 1) {
         S.rpm += (0 - S.rpm) * Math.min(1, dt * 0.8);
       }
 
-      var a = S.thr * 13 - 1.1 - S.v * 0.115 - (S.db ? 7 + S.v * 0.055 : 0);
+      var a = thrEff * 13 - 1.1 - S.v * 0.115 - (S.db ? 7 + S.v * 0.055 : 0);
       S.v = Math.max(0, S.v + a * dt);
       if (S.db && S.v < 4.5) {
         release("BRAKE AUTO-RELEASED BELOW 5 KM/H - service brakes take over.");
       }
 
-      S.gridKW = (S.db && S.v > 3) ? Math.min(480, S.v * 4.6) : 0;
+      /* grid heats from the SPILL only */
       var cool = Math.max(0, S.temp - 40) * (0.012 + 0.00025 * Math.max(0, S.temp - 250));
       S.temp = Math.max(40, S.temp + (S.gridKW * 0.22 - cool) * dt);
       if (S.hot > 0) { S.hot -= dt; }
@@ -1094,7 +1117,7 @@ footer{margin-top:56px;position:relative;z-index:2}
         release("GRID OVERTEMP 880 C - contactor auto-released. Let it cool, then re-apply.");
       }
 
-      S.soc = clamp(S.soc + (S.chargeKW - S.battUse) * dt * 0.0045 - 0.004 * dt, 4, 100);
+      S.soc = clamp(S.soc + (S.chargeKW + S.battChg) * dt * RATE_CHG - S.battUse * dt * RATE_DCH - 0.004 * dt, 4, 100);
       S.odo += S.v * 2.6 * dt;
     }
 
@@ -1155,7 +1178,6 @@ footer{margin-top:56px;position:relative;z-index:2}
       }
     }
 
-    /* helpers */
     function setWire(w, on, rev, fast, slow) {
       w.classList.toggle("on", on);
       w.classList.toggle("rev", on && rev);
@@ -1174,9 +1196,10 @@ footer{margin-top:56px;position:relative;z-index:2}
       var feedOn = !S.db && S.dieselKW > 5;
       var tractionOn = !S.db && S.thr > 0.03;
       var genF = S.db && S.v > 3;
+      var chgTotal = S.chargeKW + S.battChg;
       var wheelDeg = (S.odo / 36 * 180 / Math.PI) % 360;
 
-      /* ground scrolls RIGHT; wheels spin CCW (negative) = leftward travel */
+      /* ground scrolls right; wheels spin CCW (negative) = leftward travel */
       tiesG.setAttribute("transform", "translate(" + (S.odo % 55) + ",0)");
       farG.setAttribute("transform", "translate(" + (S.odo * 0.1 % 620) + ",0)");
       nearG.setAttribute("transform", "translate(" + (S.odo * 0.28 % 620) + ",0)");
@@ -1216,7 +1239,7 @@ footer{margin-top:56px;position:relative;z-index:2}
       contArm.style.transform = S.db ? "rotate(90deg)" : "rotate(0deg)";
       sArm.style.transform = S.db ? "rotate(90deg)" : "rotate(0deg)";
       var genCol = S.db ? "#ff4b33" : "#3fd6ff";
-      var gridCol = S.db ? "#ffb437" : "#5c4a22";
+      var gridCol = S.db && S.gridKW > 5 ? "#ffb437" : "#5c4a22";
       genDot.setAttribute("fill", genCol); sGenDot.setAttribute("fill", genCol);
       gridDot.setAttribute("fill", gridCol); sGridDot.setAttribute("fill", gridCol);
       genOpen.style.display = S.db ? "" : "none";
@@ -1227,8 +1250,8 @@ footer{margin-top:56px;position:relative;z-index:2}
       sModeT.textContent = S.db ? "G - GENERATING" : "M - MOTORED";
       sModeT.setAttribute("fill", S.db ? dbCol : idleCol);
       sBusLine.setAttribute("stroke", S.db ? dbCol : (tractionOn ? "#3fd6ff" : "#33445f"));
-      sBatLine.classList.toggle("on", S.battUse > 5 || S.chargeKW > 5);
-      sBatLine.classList.toggle("rev", S.chargeKW > 5);
+      sBatLine.classList.toggle("on", chgTotal > 5 || S.battUse > 5);
+      sBatLine.classList.toggle("rev", chgTotal > 5);
       var motLetter = S.db ? "G" : "M";
       var motFillC = S.db ? dbCol : idleCol;
       motA.textContent = motLetter; motB.textContent = motLetter;
@@ -1237,13 +1260,13 @@ footer{margin-top:56px;position:relative;z-index:2}
       dbBtn.setAttribute("aria-pressed", S.db ? "true" : "false");
       dbState.textContent = S.db ? "ENGAGED" : "STANDBY";
 
-      /* wires: gen feeds bus per diesel share; batt feeds/charges per blend */
+      /* wires */
       setWire(wGen, feedOn, false, false, S.blend < 0.35);
-      if (S.chargeKW > 5) { setWire(wBatt, true, false, false, false); }
+      if (chgTotal > 5) { setWire(wBatt, true, false, S.battChg > 250, false); }
       else if (S.battUse > 5) { setWire(wBatt, true, true, false, false); }
       else if (S.v > 0) { setWire(wBatt, true, true, false, true); }
       else { setWire(wBatt, false, false, false, false); }
-      setWire(wGrid, genF, false, true, false);
+      setWire(wGrid, S.gridKW > 5, false, S.gridKW > 200, false);
       var motOn = genF || tractionOn;
       setWire(wM1, motOn, genF, genF, false);
       setWire(wM2, motOn, genF, genF, false);
@@ -1259,8 +1282,8 @@ footer{margin-top:56px;position:relative;z-index:2}
 
       var h = 84 * S.soc / 100;
       battF.forEach(function (r) { r.setAttribute("height", h); r.setAttribute("y", 306 - h); });
-      ledChg.style.animation = S.chargeKW > 5 ? "blink .6s steps(2) infinite" : "none";
-      ledChg.setAttribute("fill", S.chargeKW > 5 ? "#4de38b" : "#243c2c");
+      ledChg.style.animation = chgTotal > 5 ? "blink .6s steps(2) infinite" : "none";
+      ledChg.setAttribute("fill", chgTotal > 5 ? "#4de38b" : "#243c2c");
 
       gNeedle.setAttribute("transform", "rotate(" + (-120 + clamp(S.v, 0, 120) * 2) + " 70 74)");
       gSpd.textContent = String(Math.round(S.v));
@@ -1275,7 +1298,7 @@ footer{margin-top:56px;position:relative;z-index:2}
       lampMain.classList.toggle("on", S.rpm > 640);
       lampGen.classList.toggle("on", feedOn);
       lampDb.classList.toggle("on", S.db);
-      lampBatt.classList.toggle("on", S.chargeKW > 5 || S.battUse > 5);
+      lampBatt.classList.toggle("on", chgTotal > 5 || S.battUse > 5);
       lampGrid.classList.toggle("on", S.temp > 700 || S.hot > 0);
       lampGrid.classList.toggle("blink", S.temp > 700 || S.hot > 0);
 
@@ -1292,20 +1315,20 @@ footer{margin-top:56px;position:relative;z-index:2}
       cabStatus.innerHTML = "MODE " + modeHtml + " &middot; SRC <b>" + blendLabel(S.blend) + "</b> &middot; GRID <b" + (gridHot ? " class='warn'" : "") + ">" + Math.round(S.temp) + " C</b> &middot; PACK <b>" + S.soc.toFixed(0) + "%</b>";
 
       consoleMsg.textContent = S.msg;
-      consoleBox.classList.toggle("warn", S.msg.indexOf("880") >= 0 || S.msg.indexOf("AUTO-RELEASED") >= 0 || S.msg.indexOf("RESERVE LOW") >= 0);
+      consoleBox.classList.toggle("warn", S.msg.indexOf("880") >= 0 || S.msg.indexOf("AUTO-RELEASED") >= 0 || S.msg.indexOf("RESERVE LOW") >= 0 || S.msg.indexOf("PACK AT LIMIT") >= 0);
 
       chipSet(chEng, feedOn, "#3fd6ff", Math.round(S.rpm / 2750 * 2400) + " hp");
       chipSet(chBus, S.db || tractionOn, S.db ? "#ffb437" : "#3fd6ff", "600 V");
       var motChipOn = S.db ? S.v > 3 : S.thr > 0.03;
-      var motChipVal = S.db ? S.gridKW.toFixed(0) : String(Math.round(S.thr * 1800));
+      var motChipVal = S.db ? S.genKW.toFixed(0) : String(Math.round(S.thr * 1800));
       chipSet(chMot, motChipOn, S.db ? "#ffb437" : "#3fd6ff", motChipVal + " kW");
-      var battOn = S.chargeKW > 5 || S.battUse > 5;
+      var battOn = chgTotal > 5 || S.battUse > 5;
       var battVal;
       if (S.battUse > 5) { battVal = "-" + Math.round(S.battUse) + " kW"; }
-      else if (S.chargeKW > 5) { battVal = "+" + Math.round(S.chargeKW) + " kW"; }
+      else if (chgTotal > 5) { battVal = "+" + Math.round(chgTotal) + " kW"; }
       else { battVal = "aux"; }
       chipSet(chBatt, battOn, "#4de38b", battVal);
-      chipSet(chGrid, S.db && S.v > 3, "#ffb437", S.gridKW.toFixed(0) + " kW");
+      chipSet(chGrid, S.gridKW > 5, "#ffb437", S.gridKW.toFixed(0) + " kW");
       ar1.classList.toggle("on", feedOn);
       ar1.classList.remove("rev");
       ar2.classList.toggle("on", S.db ? S.v > 3 : S.thr > 0.03);
@@ -1315,7 +1338,7 @@ footer{margin-top:56px;position:relative;z-index:2}
       steps[0].classList.toggle("on", S.db);
       steps[1].classList.toggle("on", S.db && S.v > 3);
       steps[2].classList.toggle("on", S.db && S.v > 8);
-      steps[3].classList.toggle("on", S.temp > 150 || S.hot > 0);
+      steps[3].classList.toggle("on", S.gridKW > 5 || S.temp > 150 || S.hot > 0);
 
       tSec += dt;
       if (tSec > 1) {
@@ -1324,7 +1347,6 @@ footer{margin-top:56px;position:relative;z-index:2}
       }
     }
 
-    /* loop */
     function tick(now) {
       var dt = Math.min(0.05, (now - lastNow) / 1000);
       lastNow = now;
