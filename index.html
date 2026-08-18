@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HE-7531 — Hybrid Electric Locomotive</title>
+<meta name="description" content="HE-7531 Hybrid Electric Locomotive — dynamic braking systems visualization.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1320; --panel:#101a2c; --line:#22304a; --line2:#33445f;
+  --ink:#e9f0fa; --mut:#8fa2bd; --dim:#5c6f8c;
+  --orange:#ff7a1c; --cyan:#3fd6ff; --green:#4de38b; --amber:#ffb437; --red:#ff4b33;
+  --disp:'Chakra Petch',sans-serif; --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(1100px 560px at 72% -8%, #152340 0%, transparent 60%),
+    linear-gradient(#0d1320,#0b111c);
+  background-attachment:fixed;
+  color:var(--ink); font:14px/1.5 var(--sans); min-height:100vh; overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(#ffffff05 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff05 1px,transparent 1px),
+    linear-gradient(#ffffff08 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+}
+::selection{background:#ff7a1c55}
+
+/* drifting dust, same as the sim page */
+.dust{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.dust i{position:absolute;left:var(--x);bottom:-12px;width:var(--s);height:var(--s);border-radius:50%;
+  background:#3fd6ff;opacity:0;filter:blur(1px);animation:drift var(--d) linear infinite;animation-delay:var(--delay)}
+@keyframes drift{0%{transform:translateY(0);opacity:0}12%{opacity:.4}85%{opacity:.15}100%{transform:translateY(-105vh) translateX(40px);opacity:0}}
+
+/* horizontal scanline sweeping the viewport */
+.scan{position:fixed;left:0;right:0;top:-120px;height:120px;pointer-events:none;z-index:2;
+  background:linear-gradient(180deg,transparent,#3fd6ff0a 55%,#3fd6ff14 78%,transparent);
+  animation:scan 9s linear infinite}
+@keyframes scan{to{transform:translateY(calc(100vh + 240px))}}
+
+/* topbar */
+.topbar{position:relative;z-index:5;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:11px 24px;background:#0d1320;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font:700 17px var(--disp);letter-spacing:.06em}
+.brand .mark{width:12px;height:12px;background:var(--orange);box-shadow:0 0 12px #ff7a1c99;
+  clip-path:polygon(0 0,100% 50%,0 100%)}
+.brand em{font-style:normal;color:var(--cyan)}
+.topbar .meta{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap;font:500 11px var(--mono);
+  letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.topbar .meta b{color:var(--mut);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:2px;
+  padding:3px 10px;font:600 10px var(--mono);letter-spacing:.18em;color:var(--green);
+  background:#4de38b10;text-transform:uppercase}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* hero */
+.hero{position:relative;z-index:5;min-height:calc(100vh - 46px);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:56px 24px 72px}
+.kicker{font:600 12px var(--mono);letter-spacing:.42em;color:var(--orange);text-transform:uppercase;
+  display:flex;align-items:center;gap:14px}
+.kicker::before,.kicker::after{content:"";width:44px;height:1px;background:linear-gradient(90deg,transparent,var(--orange))}
+.kicker::after{background:linear-gradient(90deg,var(--orange),transparent)}
+h1{font:700 clamp(52px,11vw,128px)/0.95 var(--disp);letter-spacing:.02em;margin:18px 0 6px;
+  text-shadow:0 0 42px #ff7a1c33}
+h1 .sub{display:block;font-size:clamp(15px,2.4vw,24px);letter-spacing:.46em;color:var(--cyan);
+  font-weight:600;margin-top:14px;text-transform:uppercase;text-shadow:0 0 24px #3fd6ff44}
+.lede{max-width:640px;color:var(--mut);font-size:15px;margin:26px auto 0;line-height:1.75}
+.lede b{color:var(--ink);font-weight:600}
+
+/* cta */
+.cta-wrap{margin-top:52px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.cta{position:relative;display:inline-flex;align-items:center;gap:16px;text-decoration:none;
+  font:700 clamp(16px,2.2vw,21px) var(--disp);letter-spacing:.2em;text-transform:uppercase;
+  color:#0d1320;background:var(--orange);padding:20px 46px;
+  clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);
+  box-shadow:0 0 34px #ff7a1c55,inset 0 0 0 1px #ffffff33;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease;overflow:hidden}
+.cta::after{content:"";position:absolute;top:0;bottom:0;left:-70%;width:44%;
+  background:linear-gradient(105deg,transparent,#ffffff66,transparent);transform:skewX(-22deg);
+  transition:left .45s ease}
+.cta:hover{transform:translateY(-3px);background:#ff8f3d;
+  box-shadow:0 6px 54px #ff7a1c88,inset 0 0 0 1px #ffffff55}
+.cta:hover::after{left:130%}
+.cta .arrow{font-size:1.25em;transition:transform .18s ease}
+.cta:hover .arrow{transform:translateX(6px)}
+.cta-note{font:500 11px var(--mono);letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+.cta-note b{color:var(--cyan);font-weight:600}
+
+/* telemetry strip */
+.strip{position:relative;z-index:5;width:min(920px,calc(100% - 48px));margin:0 auto 28px;
+  display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);background:#101a2ccc}
+.strip .cell{padding:14px 18px;border-right:1px solid var(--line)}
+.strip .cell:last-child{border-right:none}
+.strip .k{font:600 9px var(--mono);letter-spacing:.26em;color:var(--dim);text-transform:uppercase}
+.strip .v{font:600 19px var(--disp);letter-spacing:.06em;margin-top:5px;color:var(--ink)}
+.strip .v.o{color:var(--orange)} .strip .v.c{color:var(--cyan)}
+.strip .v.g{color:var(--green)} .strip .v.a{color:var(--amber)}
+.strip .v small{font:500 10px var(--mono);color:var(--dim);letter-spacing:.12em;margin-left:4px}
+
+.foot{position:relative;z-index:5;text-align:center;padding:0 24px 34px;
+  font:500 10px var(--mono);letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+.foot .cursor{display:inline-block;width:7px;height:12px;background:var(--orange);
+  vertical-align:-2px;margin-left:6px;animation:blink 1.1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+@media (max-width:640px){
+  .strip{grid-template-columns:repeat(2,1fr)}
+  .strip .cell:nth-child(2){border-right:none}
+  .strip .cell:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .kicker::before,.kicker::after{width:22px}
+}
+</style>
+</head>
+<body>
+<div class="dust" id="dust"></div>
+<div class="scan"></div>
+
+<header class="topbar">
+  <div class="brand"><span class="mark"></span>HE-7531<em>/HYBRID</em></div>
+  <div class="meta">
+    <span>UNIT <b>7531-DELTA</b></span>
+    <span>GRID <b>NA-04</b></span>
+    <span class="chip"><span class="dot"></span>Systems Nominal</span>
+  </div>
+</header>
+
+<main class="hero">
+  <div class="kicker">Hybrid Diesel–Electric Power</div>
+  <h1>HE-7531<span class="sub">Dynamic Braking Systems</span></h1>
+  <p class="lede">A full visualization of the <b>HE-7531 hybrid electric locomotive</b> — diesel prime mover,
+  battery bank, regenerative braking and dynamic dissipation, instrumented in real time.
+  Pull the lever. Watch the energy flow.</p>
+
+  <div class="cta-wrap">
+    <a class="cta" href="hybrid-locomotive.html">Enter the Simulation <span class="arrow">→</span></a>
+    <div class="cta-note">Target <b>hybrid-locomotive.html</b> · Interactive, no install</div>
+  </div>
+
+  <div class="strip">
+    <div class="cell"><div class="k">Continuous Power</div><div class="v o">6.4<small>MW</small></div></div>
+    <div class="cell"><div class="k">Battery Bank</div><div class="v c">2.1<small>MWh</small></div></div>
+    <div class="cell"><div class="k">Regen Capture</div><div class="v g">94<small>%</small></div></div>
+    <div class="cell"><div class="k">Brake Resistors</div><div class="v a">3.2<small>MW</small></div></div>
+  </div>
+</main>
+
+<footer class="foot">HE-7531 · Hybrid Loco Visualization · Rev 1.0<span class="cursor"></span></footer>
+
+<script>
+// scatter drifting dust, same behaviour as the sim page
+(function(){
+  var d=document.getElementById('dust'),n=42,i,s;
+  for(i=0;i<n;i++){
+    s=document.createElement('i');
+    var sz=(Math.random()*2.4+1).toFixed(1);
+    s.style.setProperty('--x',(Math.random()*100).toFixed(1)+'vw');
+    s.style.setProperty('--s',sz+'px');
+    s.style.setProperty('--d',(Math.random()*14+10).toFixed(1)+'s');
+    s.style.setProperty('--delay',(-Math.random()*20).toFixed(1)+'s');
+    d.appendChild(s);
+  }
+})();
+// live UTC clock in the topbar meta
+(function(){
+  var el=document.createElement('span');
+  el.innerHTML='UTC <b id="clk">--:--:--</b>';
+  var meta=document.querySelector('.topbar .meta');
+  meta.insertBefore(el,meta.querySelector('.chip'));
+  function tick(){
+    var t=new Date().toUTCString().slice(17,25);
+    var c=document.getElementById('clk'); if(c)c.textContent=t;
+  }
+  tick(); setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
