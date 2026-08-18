@@ -1,0 +1,1370 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HE-7531 - Hybrid Electric Locomotive: Dynamic Braking Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1320; --panel:#101a2c; --panel2:#131e33; --line:#22304a; --line2:#33445f;
+  --ink:#e9f0fa; --mut:#8fa2bd; --dim:#5c6f8c;
+  --orange:#ff7a1c; --cyan:#3fd6ff; --green:#4de38b; --amber:#ffb437; --red:#ff4b33;
+  --disp:'Chakra Petch',sans-serif; --mono:'IBM Plex Mono',monospace; --sans:'IBM Plex Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(1100px 560px at 72% -8%, #152340 0%, transparent 60%),
+    linear-gradient(#0d1320,#0b111c);
+  background-attachment:fixed;
+  color:var(--ink); font:14px/1.5 var(--sans); min-height:100vh; overflow-x:hidden;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(#ffffff05 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff05 1px,transparent 1px),
+    linear-gradient(#ffffff08 1px,transparent 1px),
+    linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+}
+::selection{background:#ff7a1c55}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+.dust{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.dust i{position:absolute;left:var(--x);bottom:-12px;width:var(--s);height:var(--s);border-radius:50%;
+  background:#3fd6ff;opacity:0;filter:blur(1px);animation:drift var(--d) linear infinite;animation-delay:var(--delay)}
+@keyframes drift{0%{transform:translateY(0);opacity:0}12%{opacity:.4}85%{opacity:.15}100%{transform:translateY(-105vh) translateX(40px);opacity:0}}
+
+.topbar{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:11px 24px;background:#0d1320;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font:700 17px var(--disp);letter-spacing:.06em}
+.brand svg{display:block}
+.brand b{color:var(--orange)}
+.brand span{font:600 9.5px var(--mono);letter-spacing:.22em;color:var(--mut);padding-left:11px;border-left:1px solid var(--line2)}
+.tsub{font:500 10px var(--mono);letter-spacing:.2em;color:var(--dim)}
+.tstat{margin-left:auto;display:flex;align-items:center;gap:9px;font:600 10px var(--mono);letter-spacing:.16em;color:var(--mut)}
+.tstat b{color:var(--ink);font-weight:500}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pl 1.6s ease infinite}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.35}}
+
+main{position:relative;z-index:2;max-width:1520px;margin:0 auto;padding:22px 20px 0}
+
+.sec-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:30px 2px 14px}
+.idx{font:700 13px var(--mono);color:var(--orange);letter-spacing:.2em}
+.sec-head h1{font:700 clamp(22px,3.4vw,34px)/1 var(--disp);letter-spacing:.05em}
+.sec-head h2{font:700 clamp(19px,2.6vw,27px)/1 var(--disp);letter-spacing:.05em}
+.hint{margin-left:auto;font:400 11.5px var(--sans);color:var(--dim);font-style:italic}
+
+.stage-panel{display:flex;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+  box-shadow:0 30px 80px -30px #000a;position:relative}
+.stage{flex:1 1 640px;position:relative;min-height:400px;
+  background:
+    radial-gradient(900px 400px at 50% 0%, #16233c66, transparent 70%),
+    repeating-linear-gradient(0deg,transparent 0 27px,#ffffff04 27px 28px),
+    repeating-linear-gradient(90deg,transparent 0 27px,#ffffff04 27px 28px),
+    #0e1626;}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 90px #00000070}
+.stage svg{display:block;width:100%;height:auto}
+
+.inspect{position:absolute;top:12px;left:12px;z-index:5;width:min(280px,64%);background:#0d1728e8;
+  border:1px solid var(--line);border-top:2px solid var(--orange);padding:11px 13px}
+.inspect h4{font:700 12.5px var(--disp);letter-spacing:.1em;color:var(--ink)}
+.inspect p{font:400 11.5px/1.5 var(--sans);color:var(--mut);margin-top:4px}
+.inspect .val{font:600 12.5px var(--mono);color:var(--amber);margin-top:7px;min-height:16px}
+
+.ppath{position:absolute;left:12px;bottom:10px;z-index:5;display:flex;flex-direction:column;gap:5px;font-family:var(--mono)}
+.ppline{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pp-chip{display:flex;flex-direction:column;gap:1px;padding:4px 9px;background:#0d1728e0;border:1px solid var(--line);
+  border-radius:5px;min-width:78px;transition:border-color .3s,box-shadow .3s}
+.pp-chip b{font:600 8px var(--disp);letter-spacing:.16em;color:var(--dim)}
+.pp-chip span{font:600 11px var(--mono);color:var(--ink)}
+.pp-chip.on{border-color:var(--ac);box-shadow:0 0 14px -5px var(--ac)}
+.pp-chip.on b{color:var(--ac)}
+.pp-arr{color:#33445f;font:13px var(--mono);transition:color .3s,transform .3s}
+.pp-arr.on{color:var(--ac,#3fd6ff);text-shadow:0 0 9px var(--ac,#3fd6ff)}
+.pp-arr.rev{transform:rotate(180deg)}
+.pp-sub{font:8.5px var(--mono);letter-spacing:.14em;color:var(--dim);align-self:center;margin-right:2px}
+
+.console-line{position:absolute;right:12px;bottom:10px;z-index:5;max-width:52%;text-align:right;
+  font:500 10.5px var(--mono);color:#9fd8f5;background:#0b1424cc;border:1px solid var(--line);
+  padding:7px 11px;border-radius:5px}
+.console-line .caret{display:inline-block;width:7px;height:12px;background:#3fd6ff;margin-left:5px;vertical-align:-2px;animation:caret 1s steps(2) infinite}
+@keyframes caret{50%{opacity:0}}
+.console-line.warn{color:#ffb437;border-color:#7a4a12}
+
+.cab{flex:0 1 320px;min-width:300px;border-left:1px solid var(--line);background:#0f1930;display:flex;flex-direction:column}
+.cab::before{content:"";display:block;height:5px;background:repeating-linear-gradient(45deg,var(--orange) 0 12px,#131a29 12px 24px);opacity:.75}
+.cab-head{padding:11px 16px 8px;font:700 12px var(--disp);letter-spacing:.3em;color:var(--mut);display:flex;justify-content:space-between;align-items:center}
+.cab-head small{font:500 9px var(--mono);letter-spacing:.1em;color:var(--dim)}
+.lamps{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 12px;border-bottom:1px solid var(--line)}
+.lamp{display:flex;align-items:center;gap:6px;padding:4px 9px;border:1px solid var(--line);border-radius:999px;
+  font:600 8.5px var(--mono);letter-spacing:.14em;color:var(--dim);background:#0c1526;transition:.3s}
+.lamp i{width:8px;height:8px;border-radius:50%;background:#1c2942;box-shadow:inset 0 1px 2px #000;transition:.3s}
+.lamp.on{color:var(--ink);border-color:#31456b}
+.lamp.on i{background:var(--lc);box-shadow:0 0 9px var(--lc)}
+.lamp.blink i{animation:blink .45s steps(2) infinite}
+@keyframes blink{50%{opacity:.15}}
+
+.ctl{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:stretch;padding:14px 16px;border-bottom:1px solid var(--line);user-select:none}
+.throttle{display:flex;flex-direction:column;align-items:center;gap:6px}
+.throttle label{font:600 8.5px var(--mono);letter-spacing:.2em;color:var(--dim)}
+.t-track{position:relative;width:34px;height:188px;background:#0a1322;border:1px solid var(--line2);
+  border-radius:7px;cursor:grab;touch-action:none;overflow:hidden}
+.t-track:active{cursor:grabbing}
+.t-track::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 21px,#ffffff09 21px 22px)}
+.t-fill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(#ff9a3d55,#ff7a1c22);border-top:2px solid var(--orange);transition:height .08s linear}
+.t-knob{position:absolute;left:2px;right:2px;bottom:calc(0% - 9px);height:18px;background:linear-gradient(#4a5b7a,#2b3852);
+  border:1px solid #0a0f1a;border-radius:4px;box-shadow:0 2px 6px #000a;transition:bottom .08s linear;pointer-events:none}
+.t-knob::after{content:"";position:absolute;left:6px;right:6px;top:50%;height:2px;margin-top:-1px;background:var(--orange)}
+.notch{font:700 20px var(--mono);color:var(--ink);background:#0c1526;border:1px solid var(--line);border-radius:5px;padding:2px 0;width:34px;text-align:center}
+
+.db{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:8px;
+  padding:16px 8px 12px;background:linear-gradient(#1a2440,#131c31);border:1px solid #3a2a18;border-radius:10px;
+  cursor:pointer;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.db::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:repeating-linear-gradient(45deg,#5a3a14 0 10px,#241505 10px 20px)}
+.db:hover{border-color:#7a4a1a}
+.db .lever{width:10px;height:58px;border-radius:6px;background:linear-gradient(#43536f,#2b3852);position:relative;
+  transform-origin:50% 100%;transition:transform .35s cubic-bezier(.5,1.7,.4,1),background .3s}
+.db .lever i{position:absolute;top:-13px;left:50%;translate:-50% 0;width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#93a7c4,#4a5b7a);box-shadow:0 2px 6px #000a;transition:background .3s}
+.db .dlabel{font:700 11px var(--disp);letter-spacing:.18em;color:var(--mut);text-align:center;line-height:1.5;transition:color .3s}
+.dstate{font:600 8.5px var(--mono);letter-spacing:.2em;padding:3px 12px;border-radius:999px;border:1px solid var(--line2);color:var(--dim);transition:.3s}
+.db.engaged{border-color:#8a4a14;background:linear-gradient(#2c1d0e,#190f06);box-shadow:inset 0 0 26px #ff7a1c26,0 0 22px -6px #ff7a1c66}
+.db.engaged .lever{transform:rotate(-42deg);background:linear-gradient(#ff9a3d,#c25715)}
+.db.engaged .lever i{background:radial-gradient(circle at 35% 30%,#ffd9a0,#ff7a1c);box-shadow:0 0 14px #ff7a1c}
+.db.engaged .dlabel{color:#ffb46a}
+.db.engaged .dstate{border-color:var(--orange);color:var(--orange);background:#ff7a1c14}
+
+.hornbox{display:flex;flex-direction:column;align-items:center;gap:7px}
+.hornbox label{font:600 8.5px var(--mono);letter-spacing:.2em;color:var(--dim)}
+.horn{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a4a68,#1b2740);
+  border:2px solid #0a0f1a;box-shadow:0 5px 0 #0a0f1a,0 8px 14px #000a;cursor:pointer;color:var(--ink);
+  font:700 9px var(--disp);letter-spacing:.14em;transition:transform .08s,box-shadow .08s}
+.horn:active{transform:translateY(4px);box-shadow:0 1px 0 #0a0f1a,0 3px 6px #000a}
+.horn small{display:block;font:500 6.5px var(--mono);color:var(--dim);letter-spacing:.1em}
+
+/* diesel / electric blend */
+.blend{padding:12px 16px;border-bottom:1px solid var(--line);user-select:none}
+.blend-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.blend-head label{font:600 8.5px var(--mono);letter-spacing:.2em;color:var(--dim)}
+.blend-head b{font:700 12px var(--mono);color:var(--ink)}
+.b-track{position:relative;height:26px;background:linear-gradient(90deg,#12291c,#141d2e 50%,#33200d);
+  border:1px solid var(--line2);border-radius:7px;cursor:pointer;touch-action:none;overflow:hidden}
+.b-track:active{cursor:grabbing}
+.b-track::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 24.5%,#ffffff0e 24.5% 25%)}
+.b-fill{position:absolute;left:0;top:0;bottom:0;width:100%;background:linear-gradient(90deg,#4de38b88,#ffb43788 70%,#ff7a1caa);transition:width .08s linear}
+.b-knob{position:absolute;top:2px;bottom:2px;left:calc(100% - 6px);width:12px;background:linear-gradient(#4a5b7a,#2b3852);
+  border:1px solid #0a0f1a;border-radius:4px;box-shadow:0 2px 6px #000a;transition:left .08s linear;pointer-events:none}
+.b-knob::after{content:"";position:absolute;top:5px;bottom:5px;left:50%;width:2px;margin-left:-1px;background:#fff}
+.b-ends{display:flex;justify-content:space-between;margin-top:6px;font:600 8px var(--mono);letter-spacing:.12em;color:var(--dim)}
+.b-ends .e-l{color:var(--green)}
+.b-ends .e-r{color:var(--orange)}
+
+.grow{padding:13px 16px;border-bottom:1px solid var(--line)}
+.grow.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.gauge-wrap{position:relative;width:150px}
+.gread{position:absolute;left:0;right:0;bottom:8px;text-align:center}
+.gread b{font:700 27px var(--disp);color:var(--ink);text-shadow:0 0 14px #3fd6ff44}
+.gread span{display:block;font:600 8px var(--mono);letter-spacing:.24em;color:var(--dim);margin-top:-3px}
+.barmeter{flex:1;min-width:170px}
+.barmeter .lbl{display:flex;justify-content:space-between;font:600 8.5px var(--mono);letter-spacing:.16em;color:var(--dim);margin-bottom:6px}
+.barmeter .lbl b{font:600 12px var(--mono);color:var(--ink);letter-spacing:0}
+.bar{position:relative;height:11px;background:#0a1322;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.bar .fill{position:absolute;top:0;bottom:0;left:0;width:0;transition:width .2s linear}
+#tempTrack .fill{background:linear-gradient(90deg,#4de38b,#ffc44d,#ff7a1c,#ff4b33)}
+.bar .mark{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff;box-shadow:0 0 6px #fff;transition:left .2s linear}
+.bar .tick880{position:absolute;top:0;bottom:0;left:97.8%;width:2px;background:var(--red)}
+.bar.warn{animation:barWarn .8s ease infinite}
+@keyframes barWarn{50%{box-shadow:0 0 14px #ff4b3388}}
+#socTrack .fill{background:linear-gradient(90deg,#1f8a4d,var(--green))}
+.kw{font:700 25px var(--mono);color:var(--amber);text-shadow:0 0 16px #ffb43744;min-width:120px}
+.kw small{font:600 10px var(--mono);color:var(--dim);display:block;letter-spacing:.2em}
+.status{padding:12px 16px;font:500 11px/1.7 var(--mono);color:var(--mut);min-height:58px}
+.status b{color:var(--ink);font-weight:600}
+.status .warn{color:var(--amber)}
+
+svg text{user-select:none}
+.tx{fill:var(--mut);font-family:var(--mono)}
+.txb{fill:var(--ink);font-weight:600;font-family:var(--mono)}
+.comp{cursor:crosshair;transition:filter .25s}
+.comp:hover,.comp:focus-visible{filter:brightness(1.3) drop-shadow(0 0 6px #3fd6ff66)}
+.wire .base{stroke:#26344f;stroke-width:5;fill:none;stroke-linecap:round}
+.wire .glow{stroke-width:8;fill:none;opacity:0;transition:opacity .4s;stroke-linecap:round}
+.wire .flow{stroke-width:2.4;fill:none;stroke-dasharray:7 11;opacity:0;animation:dashF .55s linear infinite}
+.wire.on .flow{opacity:1}
+.wire.on .glow{opacity:.22}
+@keyframes dashF{to{stroke-dashoffset:-28}}
+.w-c .flow,.w-c .glow{stroke:var(--cyan)}
+.w-a .flow,.w-a .glow{stroke:var(--amber)}
+.wire.fast .flow{animation-duration:.24s}
+.wire.slow .flow{animation-duration:1.15s}
+.wire.rev .flow{animation-direction:reverse}
+#sBatLine{stroke:#33445f;stroke-dasharray:4 5;transition:stroke .4s}
+#sBatLine.on{stroke:var(--cyan);animation:dashF 1s linear infinite}
+#sBatLine.rev{animation-direction:reverse}
+.piston{animation:pist var(--engT,2.4s) cubic-bezier(.45,.05,.55,.95) infinite}
+.p2{animation-delay:calc(var(--engT) * -.25)}.p3{animation-delay:calc(var(--engT) * -.5)}.p4{animation-delay:calc(var(--engT) * -.75)}
+@keyframes pist{0%,100%{transform:translateY(0)}50%{transform:translateY(26px)}}
+.heatwave path{stroke:var(--amber);stroke-width:2.5;fill:none;opacity:0;animation:heatRise 1.7s ease-in-out infinite}
+.heatwave path:nth-child(2){animation-delay:.5s}.heatwave path:nth-child(3){animation-delay:1s}
+@keyframes heatRise{0%{transform:translateY(8px);opacity:0}35%{opacity:.85}100%{transform:translateY(-16px);opacity:0}}
+#contArm,#sArm{transform-box:view-box;transition:transform .5s cubic-bezier(.55,1.55,.45,1)}
+#contArm{transform-origin:921px 262px}
+#sArm{transform-origin:300px 200px}
+.comp-glow.on{filter:drop-shadow(0 0 7px #ffb43799)}
+
+.seq-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:18px}
+.schem{background:var(--panel2);border:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:10px}
+.schem svg{width:100%;height:auto}
+.schem-cap{font:500 9.5px var(--mono);letter-spacing:.18em;color:var(--dim);text-align:center}
+.steps{list-style:none;display:grid;gap:11px;align-content:start}
+.step{display:flex;gap:14px;padding:13px 16px;border:1px solid var(--line);border-left:3px solid #26344f;
+  background:#101a2c;opacity:0;transition:border-color .35s,background .35s,box-shadow .35s}
+.seq-grid.in .step{animation:rise .55s both;animation-delay:calc(var(--i)*110ms)}
+@keyframes rise{from{opacity:0;translate:0 20px}to{opacity:1;translate:0 0}}
+.step.on{border-left-color:var(--orange);background:#172440;box-shadow:0 12px 32px -20px #ff7a1cbb}
+.sn{flex:0 0 34px;width:34px;height:34px;border:1px solid var(--line2);border-radius:6px;display:grid;place-items:center;
+  font:700 15px var(--disp);color:var(--dim);transition:.3s}
+.step.on .sn{background:var(--orange);border-color:var(--orange);color:#180d02;box-shadow:0 0 16px #ff7a1c55}
+.step h3{font:700 12.5px var(--disp);letter-spacing:.16em;color:var(--ink)}
+.step.on h3{color:#ffb46a}
+.step p{margin-top:5px;font:12.5px/1.55 var(--sans);color:var(--mut);max-width:52ch}
+
+.energy{display:grid;grid-template-columns:1.25fr 1fr;gap:26px;margin-top:26px}
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px}
+.tok{flex:1 1 150px;min-width:140px;border:1px solid var(--line);background:var(--panel2);padding:16px 16px 13px;position:relative;transition:.3s}
+.tok:hover{border-color:var(--line2);translate:0 -3px}
+.tok b{display:block;font:700 15px var(--disp);letter-spacing:.12em}
+.tok span{display:block;margin-top:5px;font:11.5px/1.45 var(--sans);color:var(--mut)}
+.tok.t-hot{border-color:#7a3c12;box-shadow:0 0 26px -8px #ff7a1c66}
+.tok.t-hot b{color:var(--amber)}
+.tok.t-heat b{color:var(--red)}
+.tok.t-heat::after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:4px;
+  background:repeating-linear-gradient(90deg,#ff4b33 0 8px,transparent 8px 16px);opacity:.5;animation:heatSlide 1s linear infinite}
+@keyframes heatSlide{to{background-position:16px 0}}
+.chev{display:flex;gap:4px;align-items:center;padding:0 2px}
+.chev i{width:10px;height:15px;background:#33445f;transform:skewX(-24deg);animation:chevA 1.2s infinite}
+.chev i:nth-child(2){animation-delay:.15s;background:#43536f}
+.chev i:nth-child(3){animation-delay:.3s;background:#5a6b88}
+.chev.c-hot i{background:#8a4a20}.chev.c-hot i:nth-child(2){background:#b35c24}.chev.c-hot i:nth-child(3){background:#e0702a}
+@keyframes chevA{0%,100%{opacity:.25}50%{opacity:1}}
+.en-note{margin-top:18px;font:13px/1.7 var(--sans);color:var(--mut);max-width:64ch}
+.en-note b{color:var(--ink)}
+.en-side h4{font:700 13px var(--disp);letter-spacing:.22em;color:var(--orange);margin-bottom:10px}
+.en-side p{font:13px/1.65 var(--sans);color:var(--mut)}
+.facts{margin-top:16px;display:grid;gap:8px}
+.facts li{display:flex;gap:14px;align-items:baseline;border:1px solid var(--line);padding:10px 14px;background:#0f1930;transition:.3s}
+.facts li:hover{border-color:var(--line2);translate:5px 0}
+.facts b{font:700 19px var(--mono);color:var(--orange);min-width:92px}
+.facts span{font:12px var(--sans);color:var(--mut)}
+
+footer{margin-top:56px;position:relative;z-index:2}
+.hazard{height:9px;background:repeating-linear-gradient(45deg,var(--orange) 0 16px,#141b29 16px 32px);opacity:.85}
+.specbar{display:flex;flex-wrap:wrap;gap:8px 26px;align-items:center;padding:15px 26px;
+  font:500 10px var(--mono);letter-spacing:.14em;color:var(--mut);background:#0c1220}
+.credit{margin-left:auto;font-style:italic;letter-spacing:.04em;color:var(--dim)}
+
+.reveal{opacity:0;translate:0 26px;transition:opacity .7s ease,translate .7s ease}
+.reveal.in{opacity:1;translate:0 0}
+
+@media(max-width:1020px){
+  .seq-grid,.energy{grid-template-columns:1fr}
+  .cab{border-left:none;border-top:1px solid var(--line);flex:1 1 100%}
+  .hint{display:none}
+  .console-line{max-width:70%}
+}
+@media (prefers-reduced-motion: reduce){
+  .dust i,.heatwave path,.chev i,.tok.t-heat::after,.console-line .caret,.pulse,.lamp.blink i{animation:none!important}
+  .reveal,.seq-grid.in .step{opacity:1;translate:0 0;animation:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<div class="dust" aria-hidden="true">
+  <i style="--x:6%;--d:21s;--delay:-4s;--s:3px"></i>
+  <i style="--x:24%;--d:27s;--delay:-12s;--s:2px"></i>
+  <i style="--x:47%;--d:19s;--delay:-2s;--s:3px"></i>
+  <i style="--x:63%;--d:31s;--delay:-18s;--s:2px"></i>
+  <i style="--x:81%;--d:24s;--delay:-8s;--s:4px"></i>
+  <i style="--x:94%;--d:29s;--delay:-21s;--s:2px"></i>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 34 24" width="32" aria-hidden="true"><rect x="1" y="4" width="22" height="12" rx="2" fill="#ff7a1c"/><rect x="20" y="7" width="12" height="9" rx="2" fill="#3fd6ff"/><circle cx="8" cy="18.5" r="3.2" fill="#0d1320" stroke="#8fa2bd" stroke-width="1.6"/><circle cx="15" cy="18.5" r="3.2" fill="#0d1320" stroke="#8fa2bd" stroke-width="1.6"/><circle cx="25" cy="18.5" r="3.2" fill="#0d1320" stroke="#8fa2bd" stroke-width="1.6"/></svg>
+    <b>HE-7531</b><span>HYBRID ELECTRIC LOCOMOTIVE</span>
+  </div>
+  <div class="tsub">SYSTEMS CUTAWAY &middot; TRACTION &amp; DYNAMIC BRAKING</div>
+  <div class="tstat"><i class="pulse"></i><span>LIVE SIM</span><b id="clk">--:--:--</b></div>
+</header>
+
+<main>
+<!-- 01 STAGE -->
+<section class="reveal">
+  <div class="sec-head">
+    <span class="idx">01</span>
+    <h1>LIVE SYSTEM CUTAWAY</h1>
+    <span class="hint">blend diesel/electric at will &middot; pull the power handle &middot; throw the DYNAMIC BRAKE &middot; hover any system to inspect it</span>
+  </div>
+
+  <div class="stage-panel">
+    <div class="stage">
+
+      <div class="inspect" aria-live="polite">
+        <h4 id="insName">CUTAWAY &middot; HE-7531</h4>
+        <p id="insRole">Hover a system to inspect it live.</p>
+        <div class="val" id="insVal">Blend the source, raise the throttle, then throw the brake.</div>
+      </div>
+
+      <div class="ppath" aria-hidden="true">
+        <div class="ppline">
+          <div class="pp-chip" id="chEng" style="--ac:#3fd6ff"><b>ENGINE</b><span>0 hp</span></div>
+          <span class="pp-arr" id="ar1" style="--ac:#3fd6ff">&#8594;</span>
+          <div class="pp-chip" id="chBus" style="--ac:#3fd6ff"><b>MAIN BUS</b><span>600 V</span></div>
+          <span class="pp-arr" id="ar2" style="--ac:#3fd6ff">&#8594;</span>
+          <div class="pp-chip" id="chMot" style="--ac:#3fd6ff"><b>TRACTION</b><span>0 kW</span></div>
+        </div>
+        <div class="ppline">
+          <span class="pp-sub">BUS BRANCHES</span>
+          <div class="pp-chip" id="chBatt" style="--ac:#4de38b"><b>BATTERY</b><span>idle</span></div>
+          <div class="pp-chip" id="chGrid" style="--ac:#ffb437"><b>RESISTOR GRID</b><span>0 kW</span></div>
+        </div>
+      </div>
+
+      <div class="console-line" id="consoleBox"><span id="consoleMsg">READY - source at 100% diesel. Blend to electric, pull the power handle, then throw the DYNAMIC BRAKE.</span><span class="caret"></span></div>
+
+      <svg id="scene" viewBox="0 0 1240 560" role="img" aria-label="Cutaway diagram of a hybrid electric locomotive: prime engine, battery pack, traction motors and roof-mounted dynamic braking resistor grid">
+        <defs>
+          <linearGradient id="bodyG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#35435f"/><stop offset="1" stop-color="#202c44"/></linearGradient>
+          <linearGradient id="stripeG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3d"/><stop offset="1" stop-color="#f06a10"/></linearGradient>
+          <linearGradient id="glassG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d3d5e"/><stop offset="1" stop-color="#0c1c30"/></linearGradient>
+          <linearGradient id="engG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d4e70"/><stop offset="1" stop-color="#26334e"/></linearGradient>
+          <linearGradient id="battG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cf2ae"/><stop offset="1" stop-color="#1f8a4d"/></linearGradient>
+          <radialGradient id="haloG"><stop offset="0" stop-color="#ff6a2a" stop-opacity=".8"/><stop offset="1" stop-color="#ff6a2a" stop-opacity="0"/></radialGradient>
+          <radialGradient id="smokeG"><stop offset="0" stop-color="#aebcd0" stop-opacity=".55"/><stop offset="1" stop-color="#aebcd0" stop-opacity="0"/></radialGradient>
+          <radialGradient id="hlG"><stop offset="0" stop-color="#ffe9b0" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9b0" stop-opacity="0"/></radialGradient>
+          <clipPath id="bodyClip"><path d="M 1010 160 L 460 160 C 350 160 262 196 204 300 C 168 352 148 392 148 430 L 1010 430 Z"/></clipPath>
+          <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+        </defs>
+
+        <!-- SCENERY (scrolls right: train faces left, camera rides with it) -->
+        <rect x="0" y="470" width="1240" height="48" fill="#0f1728"/>
+        <g id="farG" fill="#111b2e" opacity=".85">
+          <g id="farUnit">
+            <path d="M0 516 L0 470 Q60 448 140 462 Q200 470 260 452 Q340 430 420 456 Q470 470 540 462 Q580 456 620 470 L620 516 Z"/>
+            <circle cx="500" cy="436" r="17"/><rect x="492" y="448" width="5" height="68"/><rect x="504" y="448" width="5" height="68"/>
+          </g>
+          <use href="#farUnit" x="-620"/><use href="#farUnit" x="620"/><use href="#farUnit" x="1240"/>
+        </g>
+        <g id="nearG" fill="#18233a">
+          <g id="nearUnit">
+            <rect x="0" y="474" width="4" height="42"/><rect x="124" y="474" width="4" height="42"/><rect x="248" y="474" width="4" height="42"/><rect x="372" y="474" width="4" height="42"/><rect x="496" y="474" width="4" height="42"/><rect x="616" y="474" width="4" height="42"/>
+            <rect x="0" y="486" width="620" height="3"/>
+            <rect x="556" y="416" width="5" height="100"/><rect x="546" y="398" width="26" height="42" rx="3"/>
+            <circle cx="559" cy="408" r="3.4" fill="#ff4b33"/><circle cx="559" cy="420" r="3.4" fill="#5c4a22"/><circle cx="559" cy="432" r="3.4" fill="#1f5c37"/>
+          </g>
+          <use href="#nearUnit" x="-620"/><use href="#nearUnit" x="620"/><use href="#nearUnit" x="1240"/>
+        </g>
+        <rect x="0" y="508" width="1240" height="10" fill="#0e1626"/>
+        <rect x="0" y="516" width="1240" height="34" fill="#171310"/>
+        <g id="tiesG" fill="#241b12">
+          <g id="tiesA"></g>
+          <use href="#tiesA" x="55"/>
+        </g>
+        <ellipse cx="580" cy="519" rx="440" ry="8" fill="#000" opacity=".35"/>
+
+        <!-- WHEELS (rotate CCW for leftward travel) -->
+        <g id="wheelSet">
+          <g class="wheel">
+            <circle cx="250" cy="478" r="36" fill="#10182a" stroke="#2b3852" stroke-width="5"/>
+            <circle cx="250" cy="478" r="29" fill="none" stroke="#33445f" stroke-width="2"/>
+            <g class="spk" data-cx="250" data-cy="478"><line x1="250" y1="453" x2="250" y2="503" stroke="#2b3852" stroke-width="7"/><line x1="225" y1="478" x2="275" y2="478" stroke="#2b3852" stroke-width="7"/></g>
+            <circle cx="250" cy="478" r="7.5" fill="#3a4c6d"/><circle cx="250" cy="478" r="3" fill="#0d1523"/>
+            <path d="M 221 455 A 36 36 0 0 1 249 442" fill="none" stroke="#5a6b88" stroke-width="2.5" opacity=".55"/>
+          </g>
+          <g class="wheel">
+            <circle cx="360" cy="478" r="36" fill="#10182a" stroke="#2b3852" stroke-width="5"/>
+            <circle cx="360" cy="478" r="29" fill="none" stroke="#33445f" stroke-width="2"/>
+            <g class="spk" data-cx="360" data-cy="478"><line x1="360" y1="453" x2="360" y2="503" stroke="#2b3852" stroke-width="7"/><line x1="335" y1="478" x2="385" y2="478" stroke="#2b3852" stroke-width="7"/></g>
+            <circle cx="360" cy="478" r="7.5" fill="#3a4c6d"/><circle cx="360" cy="478" r="3" fill="#0d1523"/>
+            <path d="M 331 455 A 36 36 0 0 1 359 442" fill="none" stroke="#5a6b88" stroke-width="2.5" opacity=".55"/>
+          </g>
+          <g class="wheel">
+            <circle cx="830" cy="478" r="36" fill="#10182a" stroke="#2b3852" stroke-width="5"/>
+            <circle cx="830" cy="478" r="29" fill="none" stroke="#33445f" stroke-width="2"/>
+            <g class="spk" data-cx="830" data-cy="478"><line x1="830" y1="453" x2="830" y2="503" stroke="#2b3852" stroke-width="7"/><line x1="805" y1="478" x2="855" y2="478" stroke="#2b3852" stroke-width="7"/></g>
+            <circle cx="830" cy="478" r="7.5" fill="#3a4c6d"/><circle cx="830" cy="478" r="3" fill="#0d1523"/>
+            <path d="M 801 455 A 36 36 0 0 1 829 442" fill="none" stroke="#5a6b88" stroke-width="2.5" opacity=".55"/>
+          </g>
+          <g class="wheel">
+            <circle cx="940" cy="478" r="36" fill="#10182a" stroke="#2b3852" stroke-width="5"/>
+            <circle cx="940" cy="478" r="29" fill="none" stroke="#33445f" stroke-width="2"/>
+            <g class="spk" data-cx="940" data-cy="478"><line x1="940" y1="453" x2="940" y2="503" stroke="#2b3852" stroke-width="7"/><line x1="915" y1="478" x2="965" y2="478" stroke="#2b3852" stroke-width="7"/></g>
+            <circle cx="940" cy="478" r="7.5" fill="#3a4c6d"/><circle cx="940" cy="478" r="3" fill="#0d1523"/>
+            <path d="M 911 455 A 36 36 0 0 1 939 442" fill="none" stroke="#5a6b88" stroke-width="2.5" opacity=".55"/>
+          </g>
+        </g>
+        <rect x="0" y="512" width="1240" height="7" fill="#3a4a63"/>
+        <rect x="0" y="512" width="1240" height="2" fill="#8fa6c4"/>
+
+        <!-- UNDERFRAME -->
+        <rect x="218" y="432" width="174" height="13" rx="3" fill="#232f47" stroke="#0c1220"/>
+        <rect x="798" y="432" width="174" height="13" rx="3" fill="#232f47" stroke="#0c1220"/>
+        <rect x="150" y="430" width="860" height="22" fill="#141d30" stroke="#0c1220"/>
+        <rect x="150" y="430" width="860" height="4" fill="#000" opacity=".35"/>
+        <line class="mech" x1="300" y1="402" x2="300" y2="468" stroke="#5c6f8c" stroke-width="2" stroke-dasharray="4 4" opacity=".8"/>
+        <line class="mech" x1="300" y1="468" x2="252" y2="476" stroke="#5c6f8c" stroke-width="2" stroke-dasharray="4 4" opacity=".8"/>
+        <text x="308" y="426" class="tx" font-size="8">MECH DRIVE</text>
+
+        <!-- MAIN BUS -->
+        <rect id="busGlow" x="316" y="429" width="678" height="16" fill="#3fd6ff" opacity="0" filter="url(#soft)"/>
+        <rect x="320" y="433" width="670" height="8" fill="#241f14"/>
+        <line x1="986" y1="308" x2="986" y2="437" stroke="#241f14" stroke-width="7"/>
+        <rect id="busTopA" x="320" y="433" width="670" height="3" fill="#33445f"/>
+        <rect id="busTopB" x="860" y="298" width="122" height="3" fill="#33445f"/>
+        <line id="busTopC" x1="986" y1="308" x2="986" y2="437" stroke="#33445f" stroke-width="2.5"/>
+        <g fill="#0d1728" stroke="#5c6f8c" stroke-width="1.4">
+          <circle cx="330" cy="437" r="4"/><circle cx="672" cy="437" r="4"/><circle cx="767" cy="437" r="4"/><circle cx="967" cy="437" r="4"/><circle cx="986" cy="437" r="4"/>
+        </g>
+        <text x="598" y="461" class="tx" font-size="10" text-anchor="middle">MAIN BUS &middot; 600 V DC</text>
+
+        <!-- BODY -->
+        <path d="M 1010 160 L 460 160 C 350 160 262 196 204 300 C 168 352 148 392 148 430 L 1010 430 Z" fill="url(#bodyG)" stroke="#0a0f1a" stroke-width="2.5"/>
+        <g clip-path="url(#bodyClip)">
+          <rect x="145" y="336" width="870" height="96" fill="#1a2438"/>
+          <rect x="344" y="302" width="666" height="34" fill="url(#stripeG)"/>
+        </g>
+        <line x1="462" y1="164" x2="1006" y2="164" stroke="#ffffff" stroke-opacity=".09" stroke-width="2"/>
+        <line x1="474" y1="176" x2="1002" y2="176" stroke="#ffffff" stroke-opacity=".1" stroke-width="3" stroke-dasharray="2 38" stroke-linecap="round"/>
+        <text x="415" y="333" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="34" letter-spacing="3" fill="#101b2e">7531</text>
+
+        <!-- CAB WINDOW -->
+        <polygon points="330,200 452,200 428,284 306,284" fill="url(#glassG)" stroke="#0b111d" stroke-width="2"/>
+        <line x1="386" y1="200" x2="372" y2="284" stroke="#0b111d" stroke-width="2" opacity=".6"/>
+        <polygon points="350,204 372,204 352,280 336,280" fill="#ffffff" opacity=".05"/>
+
+        <!-- FRONT -->
+        <rect x="166" y="404" width="92" height="20" rx="3" fill="#0d1523" stroke="#33445f"/>
+        <text x="212" y="417" class="txb" font-size="10" text-anchor="middle">HE-7531</text>
+        <circle cx="170" cy="372" r="16" fill="url(#hlG)" opacity=".55"/>
+        <circle cx="170" cy="372" r="8" fill="#ffd98a" stroke="#6b5426" stroke-width="2"/>
+        <circle cx="181" cy="353" r="3" fill="#ff8c33"/>
+        <circle cx="1002" cy="172" r="3.5" fill="#ff4b33"/>
+
+        <!-- TRACTION MOTORS -->
+        <g class="comp" data-comp="mot" tabindex="0">
+          <g id="motBox" class="comp-glow">
+            <rect x="206" y="310" width="158" height="92" rx="7" fill="#111c31" stroke="#33445f" stroke-width="1.6"/>
+            <path d="M 206 320 v -10 h 10 M 354 320 v -10 h -10 M 206 392 v 10 h 10 M 354 392 v 10 h -10" stroke="#ff7a1c" stroke-width="2" fill="none" opacity=".8"/>
+            <g id="coils1"><line x1="250" y1="338" x2="250" y2="330" stroke="#3fd6ff" stroke-width="3"/><line x1="262" y1="359" x2="269" y2="364" stroke="#3fd6ff" stroke-width="3"/><line x1="238" y1="359" x2="231" y2="364" stroke="#3fd6ff" stroke-width="3"/></g>
+            <circle cx="250" cy="352" r="22" fill="none" stroke="#3a4c6d" stroke-width="2"/>
+            <text id="motA" x="250" y="357" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="13" fill="#8fa2bd">M</text>
+            <g id="coils2"><line x1="320" y1="338" x2="320" y2="330" stroke="#3fd6ff" stroke-width="3"/><line x1="332" y1="359" x2="339" y2="364" stroke="#3fd6ff" stroke-width="3"/><line x1="308" y1="359" x2="301" y2="364" stroke="#3fd6ff" stroke-width="3"/></g>
+            <circle cx="320" cy="352" r="22" fill="none" stroke="#3a4c6d" stroke-width="2"/>
+            <text id="motB" x="320" y="357" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="13" fill="#8fa2bd">M</text>
+            <text x="285" y="398" class="tx" font-size="8" text-anchor="middle" letter-spacing="1">TRACTION MOTORS &middot; 2 &times; 900 kW</text>
+          </g>
+        </g>
+
+        <!-- ENGINE -->
+        <g class="comp" data-comp="engine" tabindex="0">
+          <rect x="472" y="184" width="228" height="224" rx="10" fill="#0d1626" stroke="#6c7f9d" stroke-opacity=".33" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <rect x="478" y="174" width="118" height="18" rx="3" fill="#16233c" stroke="#33445f"/>
+          <text x="537" y="186" class="txb" font-size="9.5" text-anchor="middle" letter-spacing="1">PRIME ENGINE</text>
+          <rect x="538" y="158" width="10" height="86" fill="#2c3a54" stroke="#0c1220"/>
+          <rect x="486" y="240" width="160" height="104" fill="url(#engG)" stroke="#0c1220"/>
+          <rect x="488" y="206" width="26" height="60" fill="none" stroke="#43536f" stroke-width="1.6"/>
+          <rect x="522" y="206" width="26" height="60" fill="none" stroke="#43536f" stroke-width="1.6"/>
+          <rect x="556" y="206" width="26" height="60" fill="none" stroke="#43536f" stroke-width="1.6"/>
+          <rect x="590" y="206" width="26" height="60" fill="none" stroke="#43536f" stroke-width="1.6"/>
+          <rect class="piston"    x="491" y="214" width="20" height="24" fill="#43536f"/>
+          <rect class="piston p2" x="525" y="214" width="20" height="24" fill="#43536f"/>
+          <rect class="piston p3" x="559" y="214" width="20" height="24" fill="#43536f"/>
+          <rect class="piston p4" x="593" y="214" width="20" height="24" fill="#43536f"/>
+          <rect x="486" y="344" width="160" height="34" fill="#222e46" stroke="#0c1220"/>
+          <g id="flyWheel">
+            <circle cx="612" cy="361" r="20" fill="none" stroke="#43536f" stroke-width="3"/>
+            <line x1="612" y1="344" x2="612" y2="378" stroke="#43536f" stroke-width="3"/>
+            <line x1="595" y1="361" x2="629" y2="361" stroke="#43536f" stroke-width="3"/>
+          </g>
+          <rect x="652" y="300" width="40" height="40" rx="4" fill="#1f2c46" stroke="#33445f"/>
+          <text x="672" y="324" class="txb" font-size="9.5" text-anchor="middle">GEN</text>
+          <circle cx="672" cy="340" r="3" fill="#3fd6ff"/>
+          <rect x="486" y="384" width="150" height="16" rx="3" fill="#22304a" stroke="#0c1220"/>
+          <rect x="488" y="386" width="102" height="12" fill="#3fd6ff" opacity=".14"/>
+          <text x="560" y="404" class="tx" font-size="7.5" text-anchor="middle">FUEL</text>
+        </g>
+
+        <!-- BATTERY -->
+        <g class="comp" data-comp="batt" tabindex="0">
+          <rect x="702" y="184" width="134" height="224" rx="10" fill="#0d1626" stroke="#6c7f9d" stroke-opacity=".33" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <rect x="712" y="174" width="128" height="18" rx="3" fill="#16233c" stroke="#33445f"/>
+          <text x="776" y="186" class="txb" font-size="9.5" text-anchor="middle" letter-spacing="1">BATTERY PACK</text>
+          <rect x="714" y="214" width="106" height="96" rx="4" fill="none" stroke="#33445f" stroke-width="1.6"/>
+          <g id="battMods">
+            <g><rect x="718" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF0" x="720" y="220" width="9" height="50" fill="url(#battG)"/></g>
+            <g><rect x="734.5" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF1" x="736.5" y="220" width="9" height="50" fill="url(#battG)"/></g>
+            <g><rect x="751" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF2" x="753" y="220" width="9" height="50" fill="url(#battG)"/></g>
+            <g><rect x="767.5" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF3" x="769.5" y="220" width="9" height="50" fill="url(#battG)"/></g>
+            <g><rect x="784" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF4" x="786" y="220" width="9" height="50" fill="url(#battG)"/></g>
+            <g><rect x="800.5" y="218" width="13" height="88" fill="#1a2436" stroke="#2f3e59"/><rect id="battF5" x="802.5" y="220" width="9" height="50" fill="url(#battG)"/></g>
+          </g>
+          <rect x="714" y="320" width="106" height="34" rx="4" fill="#131e33" stroke="#33445f"/>
+          <text x="726" y="341" class="tx" font-size="9">BMS</text>
+          <circle id="ledChg" cx="770" cy="337" r="3.2" fill="#243c2c"/><circle cx="784" cy="337" r="3.2" fill="#5c4a22"/><circle cx="798" cy="337" r="3.2" fill="#3c1c1c"/>
+          <text x="818" y="352" class="tx" font-size="8" text-anchor="end">340 kWh</text>
+        </g>
+
+        <!-- SWITCHGEAR -->
+        <g class="comp" data-comp="sw" tabindex="0">
+          <rect x="848" y="184" width="148" height="224" rx="10" fill="#0d1626" stroke="#6c7f9d" stroke-opacity=".33" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <rect x="856" y="174" width="132" height="18" rx="3" fill="#16233c" stroke="#33445f"/>
+          <text x="922" y="186" class="txb" font-size="9.5" text-anchor="middle" letter-spacing="1">MAIN SWITCHGEAR</text>
+          <rect x="860" y="298" width="122" height="10" rx="2" fill="#241f14"/>
+          <line x1="921" y1="262" x2="921" y2="298" stroke="#2b3852" stroke-width="4"/>
+          <line x1="921" y1="210" x2="921" y2="192" stroke="#3a4c6d" stroke-width="3"/>
+          <circle id="genDot" cx="921" cy="188" r="4" fill="#3fd6ff"/>
+          <text x="913" y="184" class="tx" font-size="8" text-anchor="end">GEN</text>
+          <text id="genOpen" x="930" y="192" font-size="8" font-family="IBM Plex Mono, monospace" fill="#ff4b33" style="display:none">OPEN</text>
+          <text x="973" y="247" class="tx" font-size="8">GRID</text>
+          <circle id="gridDot" cx="967" cy="262" r="4" fill="#5c4a22"/>
+          <g id="contArm"><line x1="921" y1="262" x2="921" y2="216" stroke="#ff7a1c" stroke-width="5" stroke-linecap="round"/></g>
+          <circle cx="921" cy="262" r="4" fill="#ff7a1c"/>
+          <text x="921" y="292" class="tx" font-size="7.5" text-anchor="middle">DB CONTACTOR</text>
+        </g>
+
+        <!-- WIRES -->
+        <g id="wGen" class="wire w-c"><path class="base" d="M672 340 V437"/><path class="glow" d="M672 340 V437"/><path class="flow" d="M672 340 V437"/></g>
+        <g id="wBatt" class="wire w-c"><path class="base" d="M767 437 V318"/><path class="glow" d="M767 437 V318"/><path class="flow" d="M767 437 V318"/></g>
+        <g id="wM1" class="wire w-c"><path class="base" d="M330 437 V402"/><path class="glow" d="M330 437 V402"/><path class="flow" d="M330 437 V402"/></g>
+        <g id="wM2" class="wire w-c"><path class="base" d="M344 437 V402"/><path class="glow" d="M344 437 V402"/><path class="flow" d="M344 437 V402"/></g>
+        <g id="wGrid" class="wire w-a"><path class="base" d="M967 437 V152"/><path class="glow" d="M967 437 V152"/><path class="flow" d="M967 437 V152"/></g>
+
+        <!-- ROOF / STACK -->
+        <polygon points="530,120 554,120 550,158 534,158" fill="#2c3a54" stroke="#0c1220"/>
+        <rect x="526" y="112" width="32" height="8" rx="3" fill="#3a4c6d" stroke="#0c1220"/>
+        <rect x="524" y="156" width="40" height="6" rx="2" fill="#2c3a54"/>
+
+        <!-- RESISTOR GRID -->
+        <g class="comp" data-comp="grid" tabindex="0">
+          <ellipse id="gridHalo" cx="845" cy="118" rx="188" ry="66" fill="url(#haloG)" opacity="0"/>
+          <g class="heatwave" id="heatG" style="opacity:0">
+            <path d="M 740 84 C 748 72 732 66 740 54"/>
+            <path d="M 830 84 C 838 72 822 66 830 54"/>
+            <path d="M 920 84 C 928 72 912 66 920 54"/>
+          </g>
+          <text x="845" y="72" class="tx" font-size="8" text-anchor="middle" letter-spacing="2">DYNAMIC BRAKING GRID &middot; 480 kW</text>
+          <rect x="712" y="150" width="276" height="10" rx="2" fill="#33445f" stroke="#0c1220"/>
+          <line x1="718" y1="112" x2="982" y2="112" stroke="#2b3852" stroke-width="3"/>
+          <line x1="718" y1="134" x2="982" y2="134" stroke="#2b3852" stroke-width="3"/>
+          <g id="gridFins">
+            <rect class="fin" x="724" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="754" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="784" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="814" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="844" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="874" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="904" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="934" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+            <rect class="fin" x="964" y="84" width="16" height="66" rx="3" fill="#39445a"/>
+          </g>
+          <g id="fanBlades">
+            <line x1="996" y1="118" x2="996" y2="107" stroke="#5c6f8c" stroke-width="3.5"/>
+            <line x1="996" y1="118" x2="1005" y2="123" stroke="#5c6f8c" stroke-width="3.5"/>
+            <line x1="996" y1="118" x2="987" y2="123" stroke="#5c6f8c" stroke-width="3.5"/>
+          </g>
+          <circle cx="996" cy="118" r="13" fill="none" stroke="#33445f" stroke-width="2.5"/>
+          <circle cx="996" cy="118" r="3" fill="#3a4c6d"/>
+        </g>
+
+        <g id="fx"></g>
+      </svg>
+    </div>
+
+    <!-- CAB -->
+    <aside class="cab" aria-label="Cab control panel">
+      <div class="cab-head">CAB CONTROL <small>HE-7531 &middot; B</small></div>
+      <div class="lamps">
+        <span class="lamp" id="lampMain" style="--lc:#4de38b"><i></i>MAIN</span>
+        <span class="lamp" id="lampGen" style="--lc:#3fd6ff"><i></i>GEN</span>
+        <span class="lamp" id="lampDb" style="--lc:#ff7a1c"><i></i>DYN BRK</span>
+        <span class="lamp" id="lampBatt" style="--lc:#4de38b"><i></i>BATT</span>
+        <span class="lamp" id="lampGrid" style="--lc:#ff4b33"><i></i>GRID HOT</span>
+      </div>
+      <div class="ctl">
+        <div class="throttle">
+          <label>POWER</label>
+          <div class="t-track" id="throttle" role="slider" tabindex="0" aria-label="Throttle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="t-fill" id="thrFill"></div>
+            <div class="t-knob" id="thrKnob"></div>
+          </div>
+          <div class="notch" id="notchN">0</div>
+        </div>
+        <button class="db" id="dbBtn" aria-pressed="false">
+          <span class="lever"><i></i></span>
+          <span class="dlabel">DYNAMIC<br>BRAKE</span>
+          <span class="dstate" id="dbState">STANDBY</span>
+        </button>
+        <div class="hornbox">
+          <label>HORN</label>
+          <button class="horn" id="hornBtn" aria-label="Sound horn">HORN<small>AIR &middot; 2-TONE</small></button>
+        </div>
+      </div>
+
+      <!-- NEW: diesel / electric blend -->
+      <div class="blend">
+        <div class="blend-head">
+          <label>POWER SOURCE BLEND</label>
+          <b id="blendVal">100% DIESEL</b>
+        </div>
+        <div class="b-track" id="blendEl" role="slider" tabindex="0" aria-label="Diesel to electric blend" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <div class="b-fill" id="blendFill"></div>
+          <div class="b-knob" id="blendKnob"></div>
+        </div>
+        <div class="b-ends"><span class="e-l">ALL ELECTRIC</span><span>50 / 50</span><span class="e-r">ALL DIESEL</span></div>
+      </div>
+
+      <div class="grow row">
+        <div class="gauge-wrap">
+          <svg viewBox="0 0 140 100" width="150">
+            <path d="" id="gArc" fill="none" stroke="#22304a" stroke-width="7" stroke-linecap="round"/>
+            <g id="gTicks"></g>
+            <line id="gNeedle" x1="70" y1="74" x2="70" y2="30" stroke="#ff7a1c" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="70" cy="74" r="5" fill="#3a4c6d"/>
+          </svg>
+          <div class="gread"><b id="gSpd">0</b><span>KM/H</span></div>
+        </div>
+        <div class="barmeter">
+          <div class="lbl"><span>GRID TEMP</span><b id="tempVal">40 C</b></div>
+          <div class="bar" id="tempTrack"><div class="fill" id="tempFill"></div><div class="tick880"></div><div class="mark" id="tempMark" style="left:0%"></div></div>
+          <div class="lbl" style="margin-top:11px"><span>PACK SOC</span><b id="socVal">64%</b></div>
+          <div class="bar" id="socTrack"><div class="fill" id="socFill"></div></div>
+        </div>
+      </div>
+      <div class="grow">
+        <div class="kw"><span id="brkW">0 kW</span><small>GRID POWER &middot; DISSIPATED AS HEAT</small></div>
+      </div>
+      <div class="status" id="cabStatus">MODE <b>COAST</b></div>
+    </aside>
+  </div>
+</section>
+
+<!-- 02 SEQUENCE -->
+<section class="reveal">
+  <div class="sec-head">
+    <span class="idx">02</span>
+    <h2>DYNAMIC BRAKING, STEP BY STEP</h2>
+    <span class="hint">throw the brake in the cab above - the sequence lights up in sync</span>
+  </div>
+  <div class="seq-grid" id="seqGrid">
+    <div class="schem">
+      <svg id="schem" viewBox="0 0 560 430" role="img" aria-label="Live circuit diagram: traction motor, main contactor, engine generator feed, resistor grid and battery">
+        <defs>
+          <pattern id="sg" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#1c2942" stroke-width="1"/></pattern>
+          <marker id="arC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#3fd6ff"/></marker>
+          <marker id="arA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L7 3 L0 6 Z" fill="#ffb437"/></marker>
+        </defs>
+        <rect width="560" height="430" fill="#0e1626"/><rect width="560" height="430" fill="url(#sg)"/>
+        <rect x="272" y="30" width="56" height="42" rx="6" fill="#16233c" stroke="#33445f"/>
+        <text x="300" y="48" class="tx" font-size="9" text-anchor="middle">ENGINE</text>
+        <text x="300" y="61" class="tx" font-size="9" text-anchor="middle">GEN</text>
+        <line x1="300" y1="72" x2="300" y2="118" stroke="#3a4c6d" stroke-width="3"/>
+        <circle id="sGenDot" cx="300" cy="124" r="5.5" fill="#3fd6ff"/>
+        <text id="sGenOpen" x="314" y="128" font-size="8.5" font-family="IBM Plex Mono, monospace" fill="#ff4b33" style="display:none">OPEN</text>
+        <line x1="196" y1="200" x2="300" y2="200" stroke="#22304a" stroke-width="7"/>
+        <line id="sBusLine" x1="196" y1="200" x2="300" y2="200" stroke="#33445f" stroke-width="2" style="transition:stroke .4s"/>
+        <text x="248" y="186" class="tx" font-size="9.5" text-anchor="middle">600 V BUS</text>
+        <line x1="380" y1="200" x2="430" y2="200" stroke="#3a4c6d" stroke-width="3"/>
+        <circle id="sGridDot" cx="374" cy="200" r="5.5" fill="#5c4a22"/>
+        <g id="sArm"><line x1="300" y1="200" x2="300" y2="130" stroke="#ff7a1c" stroke-width="5" stroke-linecap="round"/></g>
+        <circle cx="300" cy="200" r="6" fill="#ff7a1c"/>
+        <rect x="36" y="118" width="160" height="134" rx="10" fill="#131e33" stroke="#33445f" stroke-width="1.5"/>
+        <text x="116" y="141" class="tx" font-size="10.5" font-weight="600" text-anchor="middle" font-family="Chakra Petch, sans-serif" letter-spacing="1">TRACTION MOTOR</text>
+        <g id="sRotor">
+          <circle cx="116" cy="200" r="40" fill="none" stroke="#3a4c6d" stroke-width="2"/>
+          <path d="M122.2 164.4 A36 36 0 0 1 151.5 193.7" fill="none" stroke="#3fd6ff" stroke-width="5" stroke-linecap="round"/>
+          <path d="M110 234.9 A36 36 0 0 1 80.7 206.2" fill="none" stroke="#3fd6ff" stroke-width="5" stroke-linecap="round"/>
+          <path d="M82.2 187.6 A36 36 0 0 1 116 164" fill="none" stroke="#3fd6ff" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <circle cx="116" cy="200" r="7" fill="#33445f"/>
+        <rect x="78" y="232" width="76" height="17" rx="4" fill="#0d1728" stroke="#33445f"/>
+        <text id="sModeT" x="116" y="244" class="tx" font-size="8.5" text-anchor="middle">M &middot; MOTORED</text>
+        <rect x="430" y="148" width="98" height="106" rx="8" fill="#131e33" stroke="#33445f" stroke-width="1.5"/>
+        <rect class="sfin" x="442" y="160" width="10" height="62" rx="3" fill="#39445a"/>
+        <rect class="sfin" x="458" y="160" width="10" height="62" rx="3" fill="#39445a"/>
+        <rect class="sfin" x="474" y="160" width="10" height="62" rx="3" fill="#39445a"/>
+        <rect class="sfin" x="490" y="160" width="10" height="62" rx="3" fill="#39445a"/>
+        <rect class="sfin" x="506" y="160" width="10" height="62" rx="3" fill="#39445a"/>
+        <text x="479" y="242" class="tx" font-size="9.5" text-anchor="middle">RESISTOR GRID</text>
+        <text x="479" y="256" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">480 kW</text>
+        <line id="sBatLine" x1="271" y1="322" x2="271" y2="203" stroke-width="2.5"/>
+        <circle cx="271" cy="200" r="3.5" fill="#33445f"/>
+        <rect x="212" y="322" width="118" height="46" rx="8" fill="none" stroke="#33445f" stroke-dasharray="5 4"/>
+        <text x="271" y="342" class="tx" font-size="9" text-anchor="middle">BATTERY PACK</text>
+        <text x="271" y="356" class="tx" font-size="8.5" text-anchor="middle" fill="#5c6f8c">blend source + aux - not the brake</text>
+        <g id="sRun">
+          <line x1="300" y1="84" x2="300" y2="106" stroke="#3fd6ff" stroke-width="3" marker-end="url(#arC)"/>
+          <line x1="262" y1="200" x2="238" y2="200" stroke="#3fd6ff" stroke-width="3" marker-end="url(#arC)"/>
+          <text x="252" y="217" class="tx" font-size="9" fill="#3fd6ff">I</text>
+          <text x="309" y="96" class="tx" font-size="9" fill="#3fd6ff">I</text>
+        </g>
+        <g id="sDb" style="display:none">
+          <line x1="238" y1="200" x2="262" y2="200" stroke="#ffb437" stroke-width="3" marker-end="url(#arA)"/>
+          <line x1="388" y1="200" x2="414" y2="200" stroke="#ffb437" stroke-width="3" marker-end="url(#arA)"/>
+          <text x="252" y="217" class="tx" font-size="9" fill="#ffb437">I</text>
+          <text x="398" y="191" class="tx" font-size="9" fill="#ffb437">I</text>
+          <path d="M 158 172 A 46 46 0 0 0 158 228" fill="none" stroke="#ffb437" stroke-width="2.5" marker-end="url(#arA)"/>
+          <text x="116" y="284" class="tx" font-size="8.5" text-anchor="middle" fill="#ffb437">counter-torque on the axles</text>
+        </g>
+        <text x="18" y="412" class="tx" font-size="9" fill="#5c6f8c">I = current &middot; E = back-EMF &middot; V = bus voltage - this map mirrors the cutaway in real time</text>
+      </svg>
+      <div class="schem-cap">LIVE CIRCUIT MAP &middot; CONTACTOR FOLLOWS THE CAB &middot; BATTERY LINE SHOWS BLEND FLOW</div>
+    </div>
+    <ol class="steps" id="steps">
+      <li class="step" style="--i:0"><span class="sn">1</span><div><h3>CUT THE LINE</h3><p>Pulling the brake handle throws the main contactor: the engine's generator opens from the traction bus. The motor loses its supply, but it is still spinning at wheel speed.</p></div></li>
+      <li class="step" style="--i:1"><span class="sn">2</span><div><h3>MOTOR BECOMES A GENERATOR</h3><p>Any armature spinning faster than its applied voltage wants to feed current, not drink it. With the bus disconnected, that current has nowhere to go until the contactor gives it somewhere.</p></div></li>
+      <li class="step" style="--i:2"><span class="sn">3</span><div><h3>CURRENT RUNS BACKWARDS</h3><p>The contactor lands on the grid contact. Back-EMF now drives current out of the motor, up the roof feed line, into the resistor bank. Electromagnetic counter-torque on the axles is the braking force itself.</p></div></li>
+      <li class="step" style="--i:3"><span class="sn">4</span><div><h3>ENERGY BECOMES HEAT</h3><p>Up to 480 kW of kinetic energy is dumped into the fins - watch them climb from steel-grey to cherry glow and shimmer off the roof. At 880 C the circuit auto-releases to protect the grid.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 03 ENERGY -->
+<section class="reveal">
+  <div class="sec-head">
+    <span class="idx">03</span>
+    <h2>WHERE THE ENERGY GOES</h2>
+    <span class="hint">no magic - conservation of energy, on a roof</span>
+  </div>
+  <div class="energy">
+    <div>
+      <div class="chain">
+        <div class="tok"><b>KINETIC</b><span>1/2 m&middot;v&sup2; - the train's own motion and momentum</span></div>
+        <div class="chev" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="tok t-hot"><b>RESISTOR GRID</b><span>I&sup2;R loss - up to 480 kW of hot copper fins</span></div>
+        <div class="chev c-hot" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="tok t-heat"><b>HEAT</b><span>radiated and fanned away into the night air</span></div>
+      </div>
+      <p class="en-note">When you pull the dynamic brake, the locomotive is not spending stored power at all - it is spending the <b>train's own momentum</b>. The motors flip into generators, dump current backwards into the roof grid, and the kinetic energy leaves the system as heat. No friction, no worn brake shoes - just counter-torque and a roof that gets hot enough to glow.</p>
+    </div>
+    <div class="en-side">
+      <h4>SO WHY THE BATTERY?</h4>
+      <p>The 340 kWh pack smooths engine load, carries the cab's auxiliaries and starts the prime mover - and with the source-blend handle it can carry any share of the traction load, from a 50/50 split to full electric. What it is not, is the brake: a pack sized to swallow 480 kW of braking current every single stop would be a different (and far pricier) machine. Classic dynamic braking accepts the waste heat, because heat is free, reliable and infinitely repeatable.</p>
+      <ul class="facts">
+        <li><b>880 &deg;C</b><span>grid auto-release temperature - the sim trips at this point too</span></li>
+        <li><b>480 kW</b><span>continuous grid rating: a full-size oven, bolted to a roof</span></li>
+        <li><b>~9 s</b><span>typical 60 to 15 km/h run on the grid at moderate speed</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="hazard"></div>
+  <div class="specbar">
+    <span>PRIME ENGINE &middot; 2,400 hp</span><span>TRACTION &middot; 2 &times; 900 kW</span><span>RESISTOR GRID &middot; 480 kW / 880 C RELEASE</span><span>BATTERY &middot; 340 kWh</span><span>BUS &middot; 600 V DC</span>
+    <em class="credit">single-file interactive - physics simplified for the demo</em>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  function $(s) { return document.querySelector(s); }
+  function $$(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  var NS = "http://www.w3.org/2000/svg";
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function boot() {
+
+    var S = {
+      v: 0, thr: 0, blend: 1, db: false, temp: 40, soc: 64,
+      rpm: 0, odo: 0, gridKW: 0, dieselKW: 0, battUse: 0, chargeKW: 0,
+      hot: 0, fanA: 0, resMsg: false,
+      msg: "READY - source at 100% diesel. Blend to electric, pull the power handle, then throw the DYNAMIC BRAKE."
+    };
+
+    var scene = $("#scene"), fxL = $("#fx");
+    var tiesG = $("#tiesG"), farG = $("#farG"), nearG = $("#nearG");
+    var spks = $$(".spk"), mechs = $$(".mech");
+    var flyW = $("#flyWheel"), fanB = $("#fanBlades");
+    var finEls = $$("#gridFins .fin"), sFinEls = $$("#schem .sfin");
+    var gridHalo = $("#gridHalo"), heatG = $("#heatG");
+    var contArm = $("#contArm"), genDot = $("#genDot"), genOpen = $("#genOpen"), gridDot = $("#gridDot");
+    var busTopA = $("#busTopA"), busTopB = $("#busTopB"), busTopC = $("#busTopC"), busGlow = $("#busGlow");
+    var wGen = $("#wGen"), wBatt = $("#wBatt"), wGrid = $("#wGrid"), wM1 = $("#wM1"), wM2 = $("#wM2");
+    var coils1 = $("#coils1"), coils2 = $("#coils2");
+    var motA = $("#motA"), motB = $("#motB"), motBox = $("#motBox");
+    var battF = $$("#battMods rect[id^=battF]");
+    var ledChg = $("#ledChg");
+    var gNeedle = $("#gNeedle"), gSpd = $("#gSpd");
+    var tempFill = $("#tempFill"), tempVal = $("#tempVal"), tempTrack = $("#tempTrack"), tempMark = $("#tempMark");
+    var socFill = $("#socFill"), socVal = $("#socVal"), brkW = $("#brkW");
+    var lampMain = $("#lampMain"), lampGen = $("#lampGen"), lampDb = $("#lampDb"), lampBatt = $("#lampBatt"), lampGrid = $("#lampGrid");
+    var dbBtn = $("#dbBtn"), dbState = $("#dbState"), hornBtn = $("#hornBtn");
+    var thrEl = $("#throttle"), thrFill = $("#thrFill"), thrKnob = $("#thrKnob"), notchN = $("#notchN");
+    var blendEl = $("#blendEl"), blendFill = $("#blendFill"), blendKnob = $("#blendKnob"), blendVal = $("#blendVal");
+    var cabStatus = $("#cabStatus"), consoleMsg = $("#consoleMsg"), consoleBox = $("#consoleBox"), clk = $("#clk");
+    var chEng = $("#chEng"), chBus = $("#chBus"), chMot = $("#chMot"), chBatt = $("#chBatt"), chGrid = $("#chGrid");
+    var ar1 = $("#ar1"), ar2 = $("#ar2");
+    var steps = $$("#steps .step");
+    var sArm = $("#sArm"), sRotor = $("#sRotor"), sRun = $("#sRun"), sDb = $("#sDb");
+    var sGenDot = $("#sGenDot"), sGenOpen = $("#sGenOpen"), sModeT = $("#sModeT"), sBusLine = $("#sBusLine"), sGridDot = $("#sGridDot");
+    var sBatLine = $("#sBatLine");
+    var insName = $("#insName"), insRole = $("#insRole"), insVal = $("#insVal");
+
+    /* ties (start early so the rightward scroll always has coverage) */
+    var tiesA = $("#tiesA");
+    for (var tx = -69; tx < 1400; tx += 55) {
+      var tr = document.createElementNS(NS, "rect");
+      tr.setAttribute("x", tx - 14); tr.setAttribute("y", 514);
+      tr.setAttribute("width", 28); tr.setAttribute("height", 15);
+      tiesA.appendChild(tr);
+    }
+
+    /* gauge */
+    (function () {
+      function polar(cx, cy, r, deg) {
+        var a = deg * Math.PI / 180;
+        return [cx + r * Math.sin(a), cy - r * Math.cos(a)];
+      }
+      var p1 = polar(70, 74, 52, -120), p2 = polar(70, 74, 52, 120);
+      $("#gArc").setAttribute("d", "M" + p1[0] + " " + p1[1] + " A52 52 0 1 1 " + p2[0] + " " + p2[1]);
+      var g = $("#gTicks");
+      for (var v = 0; v <= 120; v += 10) {
+        var a = -120 + v * 2, major = (v % 20 === 0);
+        var A = polar(70, 74, 52, a), B = polar(70, 74, major ? 43 : 46, a);
+        var l = document.createElementNS(NS, "line");
+        l.setAttribute("x1", A[0]); l.setAttribute("y1", A[1]);
+        l.setAttribute("x2", B[0]); l.setAttribute("y2", B[1]);
+        l.setAttribute("stroke", major ? "#8fa2bd" : "#33445f");
+        l.setAttribute("stroke-width", major ? 2 : 1);
+        g.appendChild(l);
+        if (major) {
+          var C = polar(70, 74, 34, a);
+          var t = document.createElementNS(NS, "text");
+          t.setAttribute("x", C[0]); t.setAttribute("y", C[1] + 3);
+          t.setAttribute("text-anchor", "middle");
+          t.setAttribute("font-size", "7.5");
+          t.setAttribute("fill", "#5c6f8c");
+          t.setAttribute("font-family", "IBM Plex Mono, monospace");
+          t.textContent = String(v);
+          g.appendChild(t);
+        }
+      }
+    })();
+
+    /* audio */
+    var AC = null;
+    function ac() {
+      if (!AC) {
+        try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { AC = null; }
+      }
+      if (AC && AC.state === "suspended") { AC.resume(); }
+      return AC;
+    }
+    function horn() {
+      var c = ac(); if (!c) { return; }
+      var t = c.currentTime;
+      var g = c.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.22, t + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+      var f = c.createBiquadFilter();
+      f.type = "lowpass"; f.frequency.value = 950;
+      var freqs = [233.08, 293.66, 349.23];
+      for (var i = 0; i < freqs.length; i++) {
+        var o = c.createOscillator();
+        o.type = "sawtooth"; o.frequency.value = freqs[i];
+        o.connect(f); o.start(t); o.stop(t + 0.75);
+      }
+      f.connect(g); g.connect(c.destination);
+    }
+    function clickSnd(up) {
+      var c = ac(); if (!c) { return; }
+      var t = c.currentTime;
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = "square";
+      o.frequency.setValueAtTime(up ? 210 : 140, t);
+      o.frequency.exponentialRampToValueAtTime(up ? 120 : 80, t + 0.06);
+      g.gain.setValueAtTime(0.12, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t + 0.09);
+    }
+
+    /* throttle */
+    function setThr(v) {
+      S.thr = clamp(v, 0, 0 + 1) * 1;
+      S.thr = clamp(S.thr, 0, 1);
+      var p = S.thr * 100;
+      thrFill.style.height = p + "%";
+      thrKnob.style.bottom = "calc(" + p + "% - 9px)";
+      notchN.textContent = String(Math.round(S.thr * 8));
+      thrEl.setAttribute("aria-valuenow", String(Math.round(S.thr * 100)));
+    }
+    var draggingT = false;
+    function thrFromY(y) {
+      var r = thrEl.getBoundingClientRect();
+      setThr(1 - (y - r.top) / r.height);
+    }
+    thrEl.addEventListener("pointerdown", function (e) {
+      draggingT = true;
+      try { thrEl.setPointerCapture(e.pointerId); } catch (err) { }
+      thrFromY(e.clientY); ac();
+    });
+    thrEl.addEventListener("pointermove", function (e) { if (draggingT) { thrFromY(e.clientY); } });
+    window.addEventListener("pointerup", function () { draggingT = false; });
+    thrEl.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") { setThr(S.thr + 0.125); e.preventDefault(); }
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") { setThr(S.thr - 0.125); e.preventDefault(); }
+    });
+
+    /* blend (diesel 100% ... electric 0%) */
+    function blendLabel(b) {
+      if (b >= 0.98) { return "100% DIESEL"; }
+      if (b <= 0.02) { return "100% ELECTRIC"; }
+      return Math.round(b * 100) + "% DIESEL";
+    }
+    function setBlend(b) {
+      S.blend = clamp(b, 0, 1);
+      var p = S.blend * 100;
+      blendFill.style.width = p + "%";
+      blendKnob.style.left = "calc(" + p + "% - 6px)";
+      blendVal.textContent = blendLabel(S.blend);
+      blendEl.setAttribute("aria-valuenow", String(Math.round(S.blend * 100)));
+    }
+    function commitBlend() {
+      var b = S.blend;
+      if (b >= 0.98) {
+        S.msg = "SOURCE: ALL DIESEL - pack idling, charges from engine surplus.";
+      } else if (b <= 0.02) {
+        S.msg = "SOURCE: ALL ELECTRIC - engine on idle, pack driving the train.";
+      } else {
+        S.msg = "SOURCE BLEND: " + Math.round(b * 100) + "% diesel / " + Math.round((1 - b) * 100) + "% electric.";
+      }
+    }
+    var draggingB = false;
+    function blendFromX(x) {
+      var r = blendEl.getBoundingClientRect();
+      setBlend((x - r.left) / r.width);
+    }
+    blendEl.addEventListener("pointerdown", function (e) {
+      draggingB = true;
+      try { blendEl.setPointerCapture(e.pointerId); } catch (err) { }
+      blendFromX(e.clientX); ac();
+    });
+    blendEl.addEventListener("pointermove", function (e) { if (draggingB) { blendFromX(e.clientX); } });
+    window.addEventListener("pointerup", function () { if (draggingB) { draggingB = false; commitBlend(); } });
+    blendEl.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight" || e.key === "ArrowUp") { setBlend(S.blend + 0.1); commitBlend(); e.preventDefault(); }
+      if (e.key === "ArrowLeft" || e.key === "ArrowDown") { setBlend(S.blend - 0.1); commitBlend(); e.preventDefault(); }
+    });
+    setBlend(1);
+
+    /* dynamic brake */
+    function engage() {
+      if (S.db) { return; }
+      ac();
+      if (S.v < 4.5) {
+        S.msg = "SPEED BELOW 5 KM/H - service brakes required, dynamic brake will not engage.";
+        return;
+      }
+      S.db = true;
+      clickSnd(true);
+      S.msg = "DYNAMIC BRAKE ENGAGED - contactor on GRID, motor in generator mode, current running backwards.";
+    }
+    function release(msg) {
+      S.db = false;
+      if (msg) { S.msg = msg; }
+      clickSnd(false);
+    }
+    dbBtn.addEventListener("click", function () {
+      if (S.db) {
+        release("DYNAMIC BRAKE RELEASED - contactor back on GEN line, traction restored.");
+      } else {
+        engage();
+      }
+    });
+    hornBtn.addEventListener("click", function () { ac(); horn(); });
+
+    /* inspection */
+    var comps = {
+      engine: { n: "PRIME ENGINE", r: "V-16 diesel prime mover. Feeds the 600 V bus according to the diesel blend.", v: function () { return "~" + Math.round(S.rpm) + " rpm - " + Math.round(S.dieselKW / 1800 * 2400) + " hp to bus"; } },
+      batt: { n: "BATTERY PACK", r: "340 kWh Li-ion pack. Blend source for traction, plus start assist and cab auxiliaries.", v: function () {
+        var x = "SoC " + S.soc.toFixed(1) + "% - ";
+        if (S.battUse > 5) { x = x + Math.round(S.battUse) + " kW to traction"; }
+        else if (S.chargeKW > 5) { x = x + Math.round(S.chargeKW) + " kW charging"; }
+        else { x = x + "aux load only"; }
+        return x;
+      } },
+      sw: { n: "MAIN SWITCHGEAR", r: "DB contactor routes the traction bus to the GEN line or the roof grid.", v: function () { return S.db ? "CONTACTOR: GRID - GEN open" : "CONTACTOR: GEN - grid open"; } },
+      mot: { n: "TRACTION MOTORS", r: "2 x 900 kW. Fed by engine, pack, or a blend of both - reversed across the grid as generators.", v: function () { return S.db ? "G - GENERATOR MODE" : "M - MOTOR MODE"; } },
+      grid: { n: "RESISTOR GRID", r: "Roof-mounted dynamic braking bank, 480 kW. Kinetic energy in, heat out.", v: function () { return Math.round(S.temp) + " C - " + Math.round(S.gridKW) + " kW dissipated"; } },
+      bus: { n: "MAIN BUS", r: "600 V DC distribution - the highway every power flow shares.", v: function () {
+        if (S.db) { return "Fed by the motors (reversed)"; }
+        if (S.blend <= 0.02) { return "Fed by the battery pack"; }
+        if (S.blend >= 0.98) { return "Fed by the engine generator"; }
+        return "Blend: engine + pack, " + Math.round(S.blend * 100) + "/" + Math.round((1 - S.blend) * 100);
+      } },
+      axles: { n: "BOGIES & AXLES", r: "Two axles per bogie, driven through the traction motors.", v: function () { return Math.round(S.v) + " km/h"; } }
+    };
+    $$(".comp").forEach(function (grp) {
+      var key = grp.getAttribute("data-comp");
+      function show() {
+        var c = comps[key]; if (!c) { return; }
+        insName.textContent = c.n;
+        insRole.textContent = c.r;
+        insVal.textContent = c.v();
+      }
+      function hide() {
+        insName.textContent = "CUTAWAY - HE-7531";
+        insRole.textContent = "Hover a system to inspect it live.";
+        insVal.textContent = "Blend the source, raise the throttle, then throw the brake.";
+      }
+      grp.addEventListener("pointerenter", show);
+      grp.addEventListener("pointerleave", hide);
+      grp.addEventListener("focus", show);
+      grp.addEventListener("blur", hide);
+    });
+
+    /* physics */
+    function step(dt) {
+      var demand = S.thr * 1800;
+      var wantBatt = (1 - S.blend);
+      var batShare = wantBatt;
+      if (S.soc < 8) { batShare = 0; }
+      if (S.soc < 8 && wantBatt > 0.05 && !S.resMsg) {
+        S.msg = "PACK RESERVE LOW - diesel taking over all traction. Pack charging.";
+        S.resMsg = true;
+      } else if (S.soc > 20) { S.resMsg = false; }
+
+      S.battUse = demand * batShare;
+      S.dieselKW = demand - S.battUse;
+      S.chargeKW = 0;
+      if (!S.db && S.soc < 100 && S.battUse < 5) {
+        S.chargeKW = S.blend * Math.max(0, S.thr * 320 - 60);
+      }
+
+      var rpmT;
+      if (S.db) { rpmT = 550; }
+      else if (S.blend < 0.02) { rpmT = 600; }
+      else { rpmT = 550 + S.thr * 2200 * (0.25 + 0.75 * S.blend); }
+      S.rpm += (rpmT - S.rpm) * Math.min(1, dt * 2.2);
+      if (S.thr <= 0.03 && !S.db && S.blend < 0.02 && S.v < 1) {
+        S.rpm += (0 - S.rpm) * Math.min(1, dt * 0.8);
+      }
+
+      var a = S.thr * 13 - 1.1 - S.v * 0.115 - (S.db ? 7 + S.v * 0.055 : 0);
+      S.v = Math.max(0, S.v + a * dt);
+      if (S.db && S.v < 4.5) {
+        release("BRAKE AUTO-RELEASED BELOW 5 KM/H - service brakes take over.");
+      }
+
+      S.gridKW = (S.db && S.v > 3) ? Math.min(480, S.v * 4.6) : 0;
+      var cool = Math.max(0, S.temp - 40) * (0.012 + 0.00025 * Math.max(0, S.temp - 250));
+      S.temp = Math.max(40, S.temp + (S.gridKW * 0.22 - cool) * dt);
+      if (S.hot > 0) { S.hot -= dt; }
+      if (S.db && S.temp >= 880) {
+        S.hot = 5;
+        release("GRID OVERTEMP 880 C - contactor auto-released. Let it cool, then re-apply.");
+      }
+
+      S.soc = clamp(S.soc + (S.chargeKW - S.battUse) * dt * 0.0045 - 0.004 * dt, 4, 100);
+      S.odo += S.v * 2.6 * dt;
+    }
+
+    /* fin colour ramp */
+    function finColor(t) {
+      var st = [[40, [57, 68, 90]], [240, [110, 70, 58]], [430, [255, 122, 44]], [650, [255, 69, 36]], [880, [255, 190, 120]]];
+      t = clamp(t, st[0][0], st[st.length - 1][0]);
+      for (var i = 0; i < st.length - 1; i++) {
+        if (t <= st[i + 1][0]) {
+          var f = (t - st[i][0]) / (st[i + 1][0] - st[i][0]);
+          var c0 = st[i][1], c1 = st[i + 1][1];
+          var r = Math.round(c0[0] + (c1[0] - c0[0]) * f);
+          var g = Math.round(c0[1] + (c1[1] - c0[1]) * f);
+          var b = Math.round(c0[2] + (c1[2] - c0[2]) * f);
+          return "rgb(" + r + "," + g + "," + b + ")";
+        }
+      }
+      return "rgb(255,190,120)";
+    }
+
+    /* particles */
+    var fx = [];
+    function spawn(kind, x, y) {
+      if (reduced || fx.length > 46) { return; }
+      var el = document.createElementNS(NS, "circle");
+      if (kind === "sm") {
+        el.setAttribute("fill", "url(#smokeG)");
+        el.setAttribute("r", 4 + Math.random() * 4);
+      } else {
+        el.setAttribute("fill", "#ffd28a");
+        el.setAttribute("r", 1.4);
+      }
+      el.setAttribute("cx", x); el.setAttribute("cy", y);
+      fxL.appendChild(el);
+      fx.push({
+        el: el, x: x, y: y, kind: kind, age: 0,
+        life: kind === "sm" ? 2.4 : 0.6,
+        vx: kind === "sm" ? 6 + Math.random() * 8 : (Math.random() - 0.5) * 50,
+        vy: kind === "sm" ? -24 - S.v * 0.22 : -70 - Math.random() * 40,
+        r: kind === "sm" ? 4 + Math.random() * 4 : 1.4
+      });
+    }
+    function stepFX(dt) {
+      for (var i = fx.length - 1; i >= 0; i--) {
+        var p = fx[i];
+        p.age += dt;
+        if (p.age >= p.life) { p.el.remove(); fx.splice(i, 1); continue; }
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.kind === "sm") {
+          p.r += 11 * dt;
+          p.el.setAttribute("r", p.r);
+          p.el.setAttribute("opacity", 0.4 * (1 - p.age / p.life));
+        } else {
+          p.vy += 300 * dt;
+          p.el.setAttribute("opacity", 0.9 * (1 - p.age / p.life));
+        }
+        p.el.setAttribute("cx", p.x); p.el.setAttribute("cy", p.y);
+      }
+    }
+
+    /* helpers */
+    function setWire(w, on, rev, fast, slow) {
+      w.classList.toggle("on", on);
+      w.classList.toggle("rev", on && rev);
+      w.classList.toggle("fast", on && fast);
+      w.classList.toggle("slow", on && slow);
+    }
+    function chipSet(el, on, acCol, val) {
+      el.classList.toggle("on", on);
+      if (acCol) { el.style.setProperty("--ac", acCol); }
+      el.querySelector("span").textContent = val;
+    }
+
+    /* render */
+    var lastNow = performance.now(), smokeAcc = 0, tSec = 0;
+    function render(now, dt) {
+      var feedOn = !S.db && S.dieselKW > 5;
+      var tractionOn = !S.db && S.thr > 0.03;
+      var genF = S.db && S.v > 3;
+      var wheelDeg = (S.odo / 36 * 180 / Math.PI) % 360;
+
+      /* ground scrolls RIGHT; wheels spin CCW (negative) = leftward travel */
+      tiesG.setAttribute("transform", "translate(" + (S.odo % 55) + ",0)");
+      farG.setAttribute("transform", "translate(" + (S.odo * 0.1 % 620) + ",0)");
+      nearG.setAttribute("transform", "translate(" + (S.odo * 0.28 % 620) + ",0)");
+      for (var i = 0; i < spks.length; i++) {
+        spks[i].setAttribute("transform", "rotate(" + (-wheelDeg) + " " + spks[i].getAttribute("data-cx") + " " + spks[i].getAttribute("data-cy") + ")");
+      }
+      mechs.forEach(function (m) { m.style.strokeDashoffset = (S.odo * 0.7 % 10); });
+      flyW.setAttribute("transform", "rotate(" + (-wheelDeg * 1.4) + " 612 361)");
+      S.fanA = (S.fanA + dt * (S.temp > 250 ? 540 : 40)) % 360;
+      fanB.setAttribute("transform", "rotate(" + S.fanA + " 996 118)");
+      coils1.setAttribute("transform", "rotate(" + (-wheelDeg) + " 250 352)");
+      coils2.setAttribute("transform", "rotate(" + (-wheelDeg) + " 320 352)");
+      sRotor.setAttribute("transform", "rotate(" + (-wheelDeg) + " 116 200)");
+
+      scene.style.setProperty("--engT", (2400 / Math.max(400, S.rpm)).toFixed(3) + "s");
+
+      var heat = clamp((S.temp - 120) / 720, 0, 1);
+      gridHalo.setAttribute("opacity", (heat * 0.9).toFixed(3));
+      heatG.style.opacity = clamp((S.temp - 180) / 420, 0, 1);
+      finEls.forEach(function (f, k) {
+        var tf = S.temp * (0.88 + 0.12 * Math.sin(now * 0.006 + k * 2.1)) * (0.92 + 0.08 * Math.sin(now * 0.023 + k * 5));
+        f.setAttribute("fill", finColor(tf));
+      });
+      sFinEls.forEach(function (f, k) { f.setAttribute("fill", finColor(clamp(S.temp + 40 + k * 6, 40, 880))); });
+      motBox.classList.toggle("on", genF);
+
+      if (feedOn && S.rpm > 700) {
+        smokeAcc += dt;
+        var iv = clamp(1.6 - S.rpm / 2200 * 1.35, 0.22, 1.6);
+        if (smokeAcc > iv) { smokeAcc = 0; spawn("sm", 543, 108); }
+      }
+      if (S.temp > 520 && Math.random() < dt * (S.temp - 520) / 130) {
+        spawn("sp", 724 + Math.floor(Math.random() * 9) * 30 + 8, 86 + Math.random() * 30);
+      }
+      stepFX(dt);
+
+      contArm.style.transform = S.db ? "rotate(90deg)" : "rotate(0deg)";
+      sArm.style.transform = S.db ? "rotate(90deg)" : "rotate(0deg)";
+      var genCol = S.db ? "#ff4b33" : "#3fd6ff";
+      var gridCol = S.db ? "#ffb437" : "#5c4a22";
+      genDot.setAttribute("fill", genCol); sGenDot.setAttribute("fill", genCol);
+      gridDot.setAttribute("fill", gridCol); sGridDot.setAttribute("fill", gridCol);
+      genOpen.style.display = S.db ? "" : "none";
+      sGenOpen.style.display = S.db ? "" : "none";
+      sRun.style.display = S.db ? "none" : "";
+      sDb.style.display = S.db ? "" : "none";
+      var dbCol = "#ffb437", idleCol = "#8fa2bd";
+      sModeT.textContent = S.db ? "G - GENERATING" : "M - MOTORED";
+      sModeT.setAttribute("fill", S.db ? dbCol : idleCol);
+      sBusLine.setAttribute("stroke", S.db ? dbCol : (tractionOn ? "#3fd6ff" : "#33445f"));
+      sBatLine.classList.toggle("on", S.battUse > 5 || S.chargeKW > 5);
+      sBatLine.classList.toggle("rev", S.chargeKW > 5);
+      var motLetter = S.db ? "G" : "M";
+      var motFillC = S.db ? dbCol : idleCol;
+      motA.textContent = motLetter; motB.textContent = motLetter;
+      motA.setAttribute("fill", motFillC); motB.setAttribute("fill", motFillC);
+      dbBtn.classList.toggle("engaged", S.db);
+      dbBtn.setAttribute("aria-pressed", S.db ? "true" : "false");
+      dbState.textContent = S.db ? "ENGAGED" : "STANDBY";
+
+      /* wires: gen feeds bus per diesel share; batt feeds/charges per blend */
+      setWire(wGen, feedOn, false, false, S.blend < 0.35);
+      if (S.chargeKW > 5) { setWire(wBatt, true, false, false, false); }
+      else if (S.battUse > 5) { setWire(wBatt, true, true, false, false); }
+      else if (S.v > 0) { setWire(wBatt, true, true, false, true); }
+      else { setWire(wBatt, false, false, false, false); }
+      setWire(wGrid, genF, false, true, false);
+      var motOn = genF || tractionOn;
+      setWire(wM1, motOn, genF, genF, false);
+      setWire(wM2, motOn, genF, genF, false);
+
+      var busCol = "#33445f";
+      if (S.db) { busCol = "#ffb437"; }
+      else if (tractionOn) { busCol = "#3fd6ff"; }
+      busTopA.setAttribute("fill", busCol);
+      busTopB.setAttribute("fill", busCol);
+      busTopC.setAttribute("stroke", busCol);
+      busGlow.setAttribute("fill", busCol);
+      busGlow.setAttribute("opacity", (S.db || tractionOn) ? "0.35" : "0");
+
+      var h = 84 * S.soc / 100;
+      battF.forEach(function (r) { r.setAttribute("height", h); r.setAttribute("y", 306 - h); });
+      ledChg.style.animation = S.chargeKW > 5 ? "blink .6s steps(2) infinite" : "none";
+      ledChg.setAttribute("fill", S.chargeKW > 5 ? "#4de38b" : "#243c2c");
+
+      gNeedle.setAttribute("transform", "rotate(" + (-120 + clamp(S.v, 0, 120) * 2) + " 70 74)");
+      gSpd.textContent = String(Math.round(S.v));
+      tempFill.style.width = (S.temp / 900 * 100) + "%";
+      tempMark.style.left = (S.temp / 900 * 100) + "%";
+      tempVal.textContent = Math.round(S.temp) + " C";
+      tempTrack.classList.toggle("warn", S.temp > 700);
+      socFill.style.width = S.soc + "%";
+      socVal.textContent = S.soc.toFixed(0) + "%";
+      brkW.textContent = S.gridKW.toFixed(0) + " kW";
+
+      lampMain.classList.toggle("on", S.rpm > 640);
+      lampGen.classList.toggle("on", feedOn);
+      lampDb.classList.toggle("on", S.db);
+      lampBatt.classList.toggle("on", S.chargeKW > 5 || S.battUse > 5);
+      lampGrid.classList.toggle("on", S.temp > 700 || S.hot > 0);
+      lampGrid.classList.toggle("blink", S.temp > 700 || S.hot > 0);
+
+      var modeHtml;
+      if (S.db) { modeHtml = "<b class='warn'>DYN BRAKE</b>"; }
+      else if (S.thr > 0.03) {
+        if (S.blend >= 0.98) { modeHtml = "<b>DIESEL TRACTION</b>"; }
+        else if (S.blend <= 0.02) { modeHtml = "<b>ELECTRIC TRACTION</b>"; }
+        else { modeHtml = "<b>BLENDED TRACTION</b>"; }
+      }
+      else if (S.rpm > 640) { modeHtml = "<b>IDLE</b>"; }
+      else { modeHtml = "<b>COAST</b>"; }
+      var gridHot = S.temp > 700;
+      cabStatus.innerHTML = "MODE " + modeHtml + " &middot; SRC <b>" + blendLabel(S.blend) + "</b> &middot; GRID <b" + (gridHot ? " class='warn'" : "") + ">" + Math.round(S.temp) + " C</b> &middot; PACK <b>" + S.soc.toFixed(0) + "%</b>";
+
+      consoleMsg.textContent = S.msg;
+      consoleBox.classList.toggle("warn", S.msg.indexOf("880") >= 0 || S.msg.indexOf("AUTO-RELEASED") >= 0 || S.msg.indexOf("RESERVE LOW") >= 0);
+
+      chipSet(chEng, feedOn, "#3fd6ff", Math.round(S.rpm / 2750 * 2400) + " hp");
+      chipSet(chBus, S.db || tractionOn, S.db ? "#ffb437" : "#3fd6ff", "600 V");
+      var motChipOn = S.db ? S.v > 3 : S.thr > 0.03;
+      var motChipVal = S.db ? S.gridKW.toFixed(0) : String(Math.round(S.thr * 1800));
+      chipSet(chMot, motChipOn, S.db ? "#ffb437" : "#3fd6ff", motChipVal + " kW");
+      var battOn = S.chargeKW > 5 || S.battUse > 5;
+      var battVal;
+      if (S.battUse > 5) { battVal = "-" + Math.round(S.battUse) + " kW"; }
+      else if (S.chargeKW > 5) { battVal = "+" + Math.round(S.chargeKW) + " kW"; }
+      else { battVal = "aux"; }
+      chipSet(chBatt, battOn, "#4de38b", battVal);
+      chipSet(chGrid, S.db && S.v > 3, "#ffb437", S.gridKW.toFixed(0) + " kW");
+      ar1.classList.toggle("on", feedOn);
+      ar1.classList.remove("rev");
+      ar2.classList.toggle("on", S.db ? S.v > 3 : S.thr > 0.03);
+      ar2.classList.toggle("rev", S.db);
+      ar2.style.setProperty("--ac", S.db ? "#ffb437" : "#3fd6ff");
+
+      steps[0].classList.toggle("on", S.db);
+      steps[1].classList.toggle("on", S.db && S.v > 3);
+      steps[2].classList.toggle("on", S.db && S.v > 8);
+      steps[3].classList.toggle("on", S.temp > 150 || S.hot > 0);
+
+      tSec += dt;
+      if (tSec > 1) {
+        tSec = 0;
+        clk.textContent = new Date().toLocaleTimeString([], { hour12: false });
+      }
+    }
+
+    /* loop */
+    function tick(now) {
+      var dt = Math.min(0.05, (now - lastNow) / 1000);
+      lastNow = now;
+      step(dt);
+      render(now, dt);
+      window.requestAnimationFrame(tick);
+    }
+    window.requestAnimationFrame(tick);
+
+    /* scroll reveal */
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      $$(".reveal").forEach(function (el) { io.observe(el); });
+      io.observe($("#seqGrid"));
+    } else {
+      $$(".reveal").forEach(function (el) { el.classList.add("in"); });
+      $("#seqGrid").classList.add("in");
+    }
+    $("#seqGrid").classList.add("reveal");
+  }
+
+  try {
+    boot();
+  } catch (err) {
+    if (window.console && console.error) { console.error(err); }
+    var c = document.getElementById("consoleMsg");
+    if (c && err) { c.textContent = "SCRIPT ERROR: " + (err.message ? err.message : err); }
+  }
+})();
+</script>
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
